@@ -25,15 +25,20 @@ public class ModuleCommands : ApplicationCommandModule
     }
   }
 
-  [SlashCommand("country-disallower", "Auto ban the users that not from your country.")]
+  [SlashCommand("cdis", "Auto ban the users that not from your country.")]
   public async Task CountryDisallower(InteractionContext c, [Option("on", "Whether country-disallower is enabled or not.")] bool Enabled)
   {
     await c.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource,
         new DiscordInteractionResponseBuilder().AsEphemeral());
 
     Config cfg = Utils.GetConfig(c.Guild);
-    var a = new CultureInfo(c.Guild.PreferredLocale);
-    string Country = Consts.CountryCodes[a.TwoLetterISOLanguageName.ToUpper()];
+
+    if (c.Interaction?.Locale == null)
+    {
+      throw new DException("Uhm?", "This command not available in this server. ");
+    }
+
+    string Country = Utils.GetCountry(c.Interaction.Locale);
 
     switch ( Enabled )
     {
@@ -50,7 +55,7 @@ public class ModuleCommands : ApplicationCommandModule
 
         if (enable == "disallow_country_true")
         {
-          cfg.Locale = c.Guild.PreferredLocale;
+          cfg.Locale = Country;
 
           await Builders.Edit(c, "Country Disallowing",
               $"🔹 [Country Disallowing]({Consts.DOCUMENTATION_GITBOOK + "/more/modules/country-disallower"}) is enabled. **DeAuth** will ban the members that not joining from **{Country}**.");

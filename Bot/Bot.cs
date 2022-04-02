@@ -246,8 +246,6 @@ public class Bot
   /// </summary>
   private static async Task ButtonPressed(DiscordClient sender, ComponentInteractionCreateEventArgs e)
   {
-    Console.WriteLine(e.Interaction.Locale);
-
     switch ( e.Id )
     {
       case Consts.VERIFY_COMPONENT_ID:
@@ -258,10 +256,15 @@ public class Bot
 
         if (cfg.Locale != null && e.Interaction?.Locale != null)
         {
-          if (!new CultureInfo(e.Interaction.Locale).EnglishName.Contains(cfg.Locale))
+          if (Utils.GetCountry(e.Interaction?.Locale) != cfg.Locale)
           {
             DiscordMember member = await e.Guild.GetMemberAsync(e.User.Id);
-            await member.BanAsync(reason: "Mismatching Country | Country Disallowing");
+
+            await e.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder()
+                                                                                                      .AddEmbed(
+                                                                                                          Builders.BasicEmbed("Locked",
+                                                                                                              $"🔸 Sorry but this server not accepts users that are from **{Country}**."))
+                                                                                                      .AsEphemeral(true));
             Utils.Log(e.Guild, member, LogType.Country_Disallowing);
             return;
           }

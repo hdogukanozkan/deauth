@@ -129,8 +129,8 @@ public class ConfigCommands : ApplicationCommandModule
           $"᲼᲼・Mode ⟩ **{cfg.CaptchaOptions.Mode}**\n");
 
       embed.AddField("Modules (/module)",
-          $"᲼᲼・Account Age Limit ⟩ **{(cfg.AgeLimit?.Day == null ? "None" : cfg.AgeLimit.Value.ToString("MM/dd/yyyy"))}**\n" +
-          $"᲼᲼・Country Disallowing ⟩ **{cfg.Locale != null}**\n" +
+          $"᲼᲼・Account Age Limit ⟩ **{((cfg.AgeLimit != null) ? $"{cfg.AgeLimit.Value.LogicalTime()}" : "False")}**\n" +
+          $"᲼᲼・Country Disallowing ⟩ **{((cfg.Locale != null) ? $"{cfg.Locale}" : "False")}**\n" +
           $"᲼᲼・Anti Raid ⟩ **{cfg.AntiRaid}**");
 
       if (errors.Length > 0)
