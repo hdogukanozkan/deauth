@@ -41,7 +41,7 @@ public static class Utils
         break;
 
       case LogType.Verify:
-        string elapsed_v_time = (DateTime.Now - member.JoinedAt).LogicalTime();
+        string elapsed_v_time = (DateTime.Now - member.JoinedAt).ToLogicalString();
         Title = "Member Verified";
 
         Description = $"> {member.Mention} has been successfully verified.\n\n" +
@@ -1000,7 +1000,7 @@ public static class Utils
   /// </summary>
   /// <param name="dt"></param>
   /// <returns></returns>
-  public static string LogicalTime(this DateTime dt)
+  public static string ToLogicalString(this DateTime dt)
   {
     // convert datetime to timespan
     TimeSpan span = DateTime.Now - dt;
@@ -1058,7 +1058,7 @@ public static class Utils
   /// </summary>
   /// <param name="dt"></param>
   /// <returns></returns>
-  public static string LogicalTime(this TimeSpan dt)
+  public static string ToLogicalString(this TimeSpan dt)
   {
     TimeSpan span = dt;
 

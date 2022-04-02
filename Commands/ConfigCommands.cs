@@ -130,7 +130,7 @@ public class ConfigCommands : ApplicationCommandModule
           $"᲼᲼・Mode ⟩ **{cfg.CaptchaOptions.Mode}**\n");
 
       embed.AddField("Modules (/module)",
-          $"᲼᲼・Account Age Limit ⟩ **{(cfg.AgeLimit != null ? $"{cfg.AgeLimit.Value.LogicalTime()}" : "False")}**\n" +
+          $"᲼᲼・Account Age Limit ⟩ **{(cfg.AgeLimit != null ? $"{cfg.AgeLimit.Value.ToLogicalString()}" : "False")}**\n" +
           $"᲼᲼・Country Disallowing ⟩ **{(cfg.Locale != null ? $"{cfg.Locale}" : "False")}**\n" +
           $"᲼᲼・Anti Raid ⟩ **{cfg.AntiRaid}**");
 
@@ -222,8 +222,6 @@ public class ConfigCommands : ApplicationCommandModule
         new DiscordInteractionResponseBuilder().AsEphemeral());
 
     ConfigTemplate? scfg;
-    Config cfg;
-    ulong Gid, Uid;
 
     try
     {
@@ -246,7 +244,7 @@ public class ConfigCommands : ApplicationCommandModule
         "**⟩** Do you want import this config? the current config will be overwritten.\n\n" +
         $"⠀🔹 From server **⟩** {SharerGuild} - {scfg.Config.GuildID}\n" +
         $"⠀🔹 Created by **⟩** {SharerUser}\n" +
-        $"⠀🔹 Created on **⟩** {scfg.CreatedOn}\n", 15,
+        $"⠀🔹 Created on **⟩** {scfg.CreatedOn.ToLogicalString()}\n", 15,
         new[] {new DiscordButtonComponent(ButtonStyle.Secondary, "import", "Import")}).GetAwaiter().GetResult();
 
     if (Import != "import")

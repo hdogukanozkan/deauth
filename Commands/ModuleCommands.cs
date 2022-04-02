@@ -172,7 +172,7 @@ public class ModuleCommands : ApplicationCommandModule
 
     DateTime when = DateTime.Now.AddDays(-BanDays);
     cfg.AgeLimit = when;
-    await Builders.Edit(c, "Limited OUT", $"🔹 Age limit is **enabled**. **DeAuth** will ban the members that younger than **{BanDays}** days.");
+    await Builders.Edit(c, "Limited OUT", $"🔹 Age limit is **enabled**. **DeAuth** will ban the members that younger than **{when.ToLogicalString()}**.");
   }
 
 }
