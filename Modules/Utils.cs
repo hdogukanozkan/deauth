@@ -32,7 +32,7 @@ public static class Utils
 
     switch ( Type )
     {
-      case LogType.New_Join:
+      case LogType.Join:
         Title = "Member Joined";
 
         Description = $">>> {member.Mention} has joined to the server. Waiting for **verification**... \n\n" +
@@ -40,7 +40,7 @@ public static class Utils
         color = DiscordColor.Blurple;
         break;
 
-      case LogType.New_Verify:
+      case LogType.Verify:
         string elapsed_v_time = (DateTime.Now - member.JoinedAt).LogicalTime();
         Title = "Member Verified";
 
@@ -49,7 +49,7 @@ public static class Utils
         color = DiscordColor.Green;
         break;
 
-      case LogType.New_Fail:
+      case LogType.VFail:
         Title = "Member Kicked";
 
         Description =
@@ -70,19 +70,19 @@ public static class Utils
         color = DiscordColor.Red;
         break;
 
-      case LogType.New_Bot:
+      case LogType.BotJoined:
         Title = "Bot Added";
         Description = $">>> A bot {member.Mention} is added to server and quarantined. Check the bot before removing quarantine from it.\n\n";
         color = DiscordColor.Red;
         break;
 
-      case LogType.New_Raider:
+      case LogType.RaidDetected:
         Title = "Raid Detected";
-        Description = $">>> Member {member.Mention} is banned due being sus.\n\n";
+        Description = $">>> After we detect suspicious joining activity of your server, we determined {member.Mention} as raider. So it banned.\n\n";
         color = DiscordColor.Red;
         break;
 
-      case LogType.Country_Disallowing:
+      case LogType.CDIS:
         Title = "Country Disallowing";
         Description = $">>> Member {member.Mention}'s country wasn't matching with server's country. It banned.\n\n";
         color = DiscordColor.Red;
@@ -224,7 +224,7 @@ public static class Utils
 
   #region Extensions / Methods not related with discord
 
- private static Dictionary<string, string> CountryCodes = new Dictionary<string, string>()
+  private static readonly Dictionary<string, string> CountryCodes = new()
   {
       {"EN", "United States"},
       {"AF", "Afghanistan"},
@@ -983,11 +983,11 @@ public static class Utils
       },
   };
 
- /// <summary>
- ///  Gets country name with TwoLetterISOCode.
- /// </summary>
- /// <param name="TwoLetterISOCode"></param>
- /// <returns></returns>
+  /// <summary>
+  ///   Gets country name with TwoLetterISOCode.
+  /// </summary>
+  /// <param name="TwoLetterISOCode"></param>
+  /// <returns></returns>
   public static string GetCountry(string TwoLetterISOCode)
   {
     var Locale = new CultureInfo(TwoLetterISOCode);
@@ -1202,7 +1202,7 @@ public static class Utils
     // await e.Guild.GetMemberAsync(e.User.Id).Result.ReplaceRolesAsync(new[] {e.Guild.EveryoneRole});
     await e.Guild.GetMemberAsync(e.User.Id).Result.RevokeRoleAsync(GetConfig(e.Guild).GetQuarantineRole());
     opt.EditStatus(e.User.Id, Status.Verified);
-    Log(e.Guild, await e.Guild.GetMemberAsync(e.User.Id), LogType.New_Verify);
+    Log(e.Guild, await e.Guild.GetMemberAsync(e.User.Id), LogType.Verify);
   }
 
   #endregion

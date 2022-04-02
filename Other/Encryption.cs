@@ -3,7 +3,7 @@
 /// <summary>
 ///   Utility class that handles encryption
 /// </summary>
-public static class Encryption
+internal class Encryption
 {
 
   /// <summary>
@@ -12,7 +12,7 @@ public static class Encryption
   /// <param name="plainText"></param>
   /// <param name="key"></param>
   /// <returns></returns>
-  public static string Encrypt(string plainText, string key)
+  protected static string Encrypt(string plainText, string key)
   {
     var iv = new byte[16];
     byte[] array;
@@ -41,7 +41,7 @@ public static class Encryption
     return Convert.ToBase64String(array);
   }
 
-  public static string Decrypt(string cipherText, string key)
+  protected static string Decrypt(string cipherText, string key)
   {
     var iv = new byte[16];
     byte[] buffer = Convert.FromBase64String(cipherText);

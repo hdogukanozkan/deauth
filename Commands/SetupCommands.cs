@@ -107,8 +107,8 @@ public class SetupCommands : ApplicationCommandModule
 
     await Builders.Edit(c, "Cleaning UP", "**⟩** Cleaning up verification components...");
     await Utils.RemovePanel(c.Guild);
-    guild.Reload(); 
-    await Builders.Edit(c, "Cleared", "🔹 Verification has been successfully removed from server. All verification data has been removed.");
+    guild.Reload();
+    await Builders.Edit(c, "Cleared", "🔹 Verification successfully removed from server. All verification data has been removed.");
 
     Serializers.Serialize();
   }

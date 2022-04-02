@@ -64,26 +64,6 @@ public static class Builders
     return r;
   }
 
-  /// <summary>
-  ///   Create a button component.
-  /// </summary>
-  public static List<DiscordActionRowComponent> CreateComponent
-  (
-      string text,
-      string id,
-      ButtonStyle style = ButtonStyle.Primary)
-  {
-    var buttons = new List<DiscordActionRowComponent>
-    {
-        new(new List<DiscordComponent>
-        {
-            new DiscordButtonComponent(style, id, text)
-        })
-    };
-
-    return buttons;
-  }
-
   #region Embed Builders
 
   /// <summary>
@@ -142,7 +122,7 @@ public static class Builders
     {
         Title = Title,
         Description = Description,
-        Footer = new DiscordEmbedBuilder.EmbedFooter {Text = "iQury"},
+        Footer = new DiscordEmbedBuilder.EmbedFooter {Text = "DeAuth"},
         Color = Color ?? DiscordColor.Blue
     };
 

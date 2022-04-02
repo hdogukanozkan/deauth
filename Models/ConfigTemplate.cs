@@ -3,7 +3,7 @@
 /// <summary>
 ///   Holds the shared config data.
 /// </summary>
-public class SharedConfig
+public class ConfigTemplate
 {
 
   public Config   Config    { get; set; }

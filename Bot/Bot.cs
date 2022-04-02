@@ -172,7 +172,7 @@ public class Bot
         if (TotalJoinDelay < 10)
         {
           await e.Member.BanAsync(reason: "Suspicious account.");
-          Utils.Log(e.Guild, e.Member, LogType.New_Raider);
+          Utils.Log(e.Guild, e.Member, LogType.RaidDetected);
         }
         else
         {
@@ -186,7 +186,7 @@ public class Bot
       if (!new CultureInfo(e.Member.Locale).EnglishName.Contains(cfg.Locale))
       {
         await e.Member.BanAsync(reason: $"User not joining from {cfg.Locale}");
-        Utils.Log(e.Guild, e.Member, LogType.Country_Disallowing);
+        Utils.Log(e.Guild, e.Member, LogType.CDIS);
       }
     }
 
@@ -238,7 +238,7 @@ public class Bot
 
     #endregion
 
-    Utils.Log(e.Guild, e.Member, LogType.New_Join);
+    Utils.Log(e.Guild, e.Member, LogType.Join);
   }
 
   /// <summary>
@@ -258,6 +258,7 @@ public class Bot
         {
           if (Utils.GetCountry(e.Interaction?.Locale) != cfg.Locale)
           {
+            string Country = Utils.GetCountry(e.Interaction.Locale);
             DiscordMember member = await e.Guild.GetMemberAsync(e.User.Id);
 
             await e.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder()
@@ -265,7 +266,7 @@ public class Bot
                                                                                                           Builders.BasicEmbed("Locked",
                                                                                                               $"🔸 Sorry but this server not accepts users that are from **{Country}**."))
                                                                                                       .AsEphemeral(true));
-            Utils.Log(e.Guild, member, LogType.Country_Disallowing);
+            Utils.Log(e.Guild, member, LogType.CDIS);
             return;
           }
         }
@@ -283,7 +284,7 @@ public class Bot
             await e.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder()
                                                                                                       .AddEmbed(
                                                                                                           Builders.BasicEmbed("Cooldown",
-                                                                                                              "You're triggered the cooldown. Please wait 5 second to try again."))
+                                                                                                              "🔸 You're triggered the cooldown. Please wait 5 second to try again."))
                                                                                                       .AsEphemeral());
             return;
           }
@@ -304,12 +305,12 @@ public class Bot
 
         DiscordInteractionResponseBuilder? Modal = new DiscordInteractionResponseBuilder()
                                                    .WithCustomId(cfg.GuildID.ToString())
-                                                   .WithTitle("Verification")
-                                                   .WithContent("Please type the following captcha code.")
+                                                   .WithTitle("Verify")
+                                                   .WithContent("🔸 Pass the verification to get access")
                                                    .AddComponents(new TextInputComponent(
-                                                       $"Code | {Captcha}",
+                                                       $"{Captcha}",
                                                        Captcha,
-                                                       "Write the code here.",
+                                                       "🔹 Write the code to here.",
                                                        required: true,
                                                        style: TextInputStyle.Short,
                                                        max_length: Captcha.Length));
@@ -372,13 +373,13 @@ public class Bot
         case VerifyFail.Ban:
           await Member.BanAsync(0, "Banned because of failed captcha.");
           Config.EditStatus(e.Interaction.User.Id, Status.Kicked);
-          Utils.Log(e.Interaction.Guild, await e.Interaction.Guild.GetMemberAsync(e.Interaction.User.Id), LogType.New_Fail);
+          Utils.Log(e.Interaction.Guild, await e.Interaction.Guild.GetMemberAsync(e.Interaction.User.Id), LogType.VFail);
           break;
 
         case VerifyFail.Kick:
           await Member.RemoveAsync("Kicked because of failed captcha.");
           Config.EditStatus(e.Interaction.User.Id, Status.Kicked);
-          Utils.Log(e.Interaction.Guild, await e.Interaction.Guild.GetMemberAsync(e.Interaction.User.Id), LogType.New_Fail);
+          Utils.Log(e.Interaction.Guild, await e.Interaction.Guild.GetMemberAsync(e.Interaction.User.Id), LogType.VFail);
           break;
 
         case VerifyFail.Nothing:

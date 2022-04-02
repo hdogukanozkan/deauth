@@ -85,7 +85,7 @@ public class ModuleCommands : ApplicationCommandModule
     }
   }
 
-  [SlashCommand("agelimit", "Block the raids on your server.")]
+  [SlashCommand("agelimit", "Put age limit of accounts for new members.")]
   public async Task AgeLimit(InteractionContext c, [Option("on", "Whether age limit is enabled or not.")] bool Enabled)
   {
     await c.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource,
@@ -137,7 +137,7 @@ public class ModuleCommands : ApplicationCommandModule
 
     #endregion
 
-    var SelectMenu = new DiscordSelectComponent("d1", "Ban the accounts that younger than...", SelectOptions);
+    var SelectMenu = new DiscordSelectComponent("d1", "Ban the accounts that younger than", SelectOptions);
 
     string DropdownResult = Builders
                             .WaitDropdown("Age Limit", "🔹 Pick up an time to put account age limit into server.",

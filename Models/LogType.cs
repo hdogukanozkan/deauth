@@ -3,12 +3,12 @@
 public enum LogType
 {
 
-  New_Join,
-  New_Verify,
-  New_Fail,
-  New_Bot,
-  New_Raider,
-  Country_Disallowing,
-  AgeLimit
+  Join,         // a new member has joined
+  Verify,       // new verify action performed
+  VFail,        // verify failed
+  BotJoined,    // bot joined
+  RaidDetected, // raid detected
+  CDIS,         // country-disallowing module triggered
+  AgeLimit      // age limit 
 
 }

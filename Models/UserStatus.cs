@@ -9,7 +9,7 @@ public class UserStatus
   /// <summary> A time of action perform. </summary>
   public DateTime Time { get; set; } = default;
 
-  /// <summary> Verification status. </summary>
+  /// <summary> Verification status of user. </summary>
   public Status Status { get; set; } = Status.UnVerified;
 
 }

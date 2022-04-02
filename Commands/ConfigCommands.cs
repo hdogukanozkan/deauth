@@ -64,7 +64,7 @@ public class ConfigCommands : ApplicationCommandModule
 
     if (ShowConfig)
     {
-      string? rm = "Unkown", vm = "Unkown", lm = "Unkown";
+      string? rm = "**Unkown**", vm = "**Unkown**", lm = "**Unkown**";
       var errors = new StringBuilder();
       // Fill the values
 
@@ -105,12 +105,13 @@ public class ConfigCommands : ApplicationCommandModule
       var embed = new DiscordEmbedBuilder
       {
           Title = "Config",
+          Description = "See your current config options",
           Author = new DiscordEmbedBuilder.EmbedAuthor
           {
               Name = c.Guild.Name,
               IconUrl = c.Guild?.IconUrl
           },
-          Color = DiscordColor.Rose,
+          Color = DiscordColor.Magenta,
           Footer = new DiscordEmbedBuilder.EmbedFooter
           {
               Text = "DeAuth"
@@ -121,7 +122,7 @@ public class ConfigCommands : ApplicationCommandModule
           $"᲼᲼・Quarantine Role ⟩ {rm}\n" +
           $"᲼᲼・Verify Channel ⟩ {vm}\n" +
           $"᲼᲼・Logging Channel ⟩ {lm}\n" +
-          $"᲼᲼・DM Message ⟩ {cfg.WelcomeMessage}");
+          $"᲼᲼・DM Message ⟩ {cfg?.WelcomeMessage ?? "**None**"}");
 
       embed.AddField("Captcha Settings",
           $"᲼᲼・Verify Fail ⟩ **{cfg.CaptchaOptions.OnVerifyFail}**\n" +
@@ -129,8 +130,8 @@ public class ConfigCommands : ApplicationCommandModule
           $"᲼᲼・Mode ⟩ **{cfg.CaptchaOptions.Mode}**\n");
 
       embed.AddField("Modules (/module)",
-          $"᲼᲼・Account Age Limit ⟩ **{((cfg.AgeLimit != null) ? $"{cfg.AgeLimit.Value.LogicalTime()}" : "False")}**\n" +
-          $"᲼᲼・Country Disallowing ⟩ **{((cfg.Locale != null) ? $"{cfg.Locale}" : "False")}**\n" +
+          $"᲼᲼・Account Age Limit ⟩ **{(cfg.AgeLimit != null ? $"{cfg.AgeLimit.Value.LogicalTime()}" : "False")}**\n" +
+          $"᲼᲼・Country Disallowing ⟩ **{(cfg.Locale != null ? $"{cfg.Locale}" : "False")}**\n" +
           $"᲼᲼・Anti Raid ⟩ **{cfg.AntiRaid}**");
 
       if (errors.Length > 0)
@@ -191,7 +192,7 @@ public class ConfigCommands : ApplicationCommandModule
 
   [VerificationDependency("・You must create a config first to share it.")]
   [SlashCommand("export", "Create a backup/template of your config.")]
-  public async Task Export(InteractionContext c, [Option("logs", "Logs should included in template also.")] bool logs = false)
+  public async Task Export(InteractionContext c, [Option("logs", "Determines logs should included in template also.")] bool logs = false)
   {
     await c.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource,
         new DiscordInteractionResponseBuilder().AsEphemeral());
@@ -202,11 +203,11 @@ public class ConfigCommands : ApplicationCommandModule
     {
       Config ca = Utils.GetConfig(c.Guild);                      // to prevent from resetting original config, create new instance
       ca.Attempts = logs ? ca.Attempts : new List<UserStatus>(); // remove logs if not requested
-      ENCRYPTED_CONFIG_KEY = ConfigManager.SendConfig(ca, c.User.Id);
+      ENCRYPTED_CONFIG_KEY = ConfigManager.CreateTemplate(ca, c.User.Id);
     }
     catch
     {
-      throw new DException("Where is wumpus?", "Failed to export your config. Your config may damaged.");
+      throw new DException("Upps?", "Failed to export your config. Your config may damaged.");
     }
 
     await Builders.Edit(c, "Exported",
@@ -214,25 +215,27 @@ public class ConfigCommands : ApplicationCommandModule
         $"⟩ Key: || {ENCRYPTED_CONFIG_KEY} ||");
   }
 
-  [SlashCommand("import", "Import an config from other servers.")]
+  [SlashCommand("import", "Import an config from another server.")]
   public static async Task Import(InteractionContext c, [Option("key", "The key of exported config.")] string Key)
   {
     await c.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource,
         new DiscordInteractionResponseBuilder().AsEphemeral());
 
-    SharedConfig? scfg;
+    ConfigTemplate? scfg;
     Config cfg;
     ulong Gid, Uid;
 
     try
     {
-      scfg = ConfigManager.ReceiveConfig(Key);
+      scfg = ConfigManager.ImportConfig(Key);
       _ = scfg.UserID;
       _ = scfg.Config.GuildID;
     }
     catch
     {
-      throw new DException("Incorrect Key?", $"An key || {Key} || was not valid template key.");
+      throw new DException("What is it?", "Failed to import this config. There are two possible reasons:\n" +
+                                          "⠀🔹 Key is invalid. Decrypt failed.\n" +
+                                          "⠀🔹 Key from old versions of **DeAuth**.");
     }
 
     string SharerGuild = c.Client.GetGuildAsync(scfg.Config.GuildID).Result?.Name ?? "**Unkown**";
@@ -257,9 +260,9 @@ public class ConfigCommands : ApplicationCommandModule
 
     Config Guild = Utils.GetConfig(c.Guild);
     await Builders.Edit(c, "Importing", "**⟩** Config setting up...");
-    ConfigManager.ImportConfig(c.Guild.Id, Guild, Key);
+    ConfigManager.Overwrite(c.Guild.Id, Guild, Key);
 
-    await Builders.Edit(c, "Success", "🔹 Config successfully imported. Use `/setup create` to finish setup.\n\n" +
+    await Builders.Edit(c, "Success", "🔹 Config successfully imported. Use `/setup create` to finish importing.\n\n" +
                                       $"・[Notes]({Consts.DOCUMENTATION_GITBOOK}/basics/config-sharing/import)\n");
   }
 

@@ -1,17 +1,17 @@
 ﻿namespace DeAuth.Other;
 
-public class ConfigManager
+internal class ConfigManager : Encryption
 {
 
-	/// <summary>
-	///   Imports a config from encrypted json string to guild.
-	/// </summary>
-	/// <param name="GuildToWrite"></param>
-	/// <param name="Cfg"></param>
-	/// <param name="Key"></param>
-	public static void ImportConfig(ulong GuildToWrite, Config Cfg, string Key)
+  /// <summary>
+  ///   Imports a config from encrypted json string to guild.
+  /// </summary>
+  /// <param name="GuildToWrite"></param>
+  /// <param name="Cfg"></param>
+  /// <param name="Key"></param>
+  public static void Overwrite(ulong GuildToWrite, Config Cfg, string Key)
   {
-    Config template = ReceiveConfig(Key).Config;
+    Config template = ImportConfig(Key)?.Config;
     template.GuildID = GuildToWrite;
     template.RoleID = 0;
     template.LogChannel = 0;
@@ -22,15 +22,15 @@ public class ConfigManager
     Consts.Config[index] = template;
   }
 
-	/// <summary>
-	///   Creates a encrypted data to make able servers share their config to other servers.
-	/// </summary>
-	/// <param name="Config">Config to share with.</param>
-	/// <param name="Sharer">The user id of sharer.</param>
-	/// <returns>A encrypted AES256 json object.</returns>
-	public static string SendConfig(Config Config, ulong Sharer)
+  /// <summary>
+  ///   Creates a encrypted data to make able servers share their config to other servers.
+  /// </summary>
+  /// <param name="Config">Config to share with.</param>
+  /// <param name="Sharer">The user id of sharer.</param>
+  /// <returns>A encrypted AES256 json object.</returns>
+  public static string CreateTemplate(Config Config, ulong Sharer)
   {
-    var ShareData = new SharedConfig
+    var ShareData = new ConfigTemplate
     {
         Config = Config,
         CreatedOn = DateTime.Now,
@@ -38,19 +38,19 @@ public class ConfigManager
     };
 
     string json = JsonConvert.SerializeObject(ShareData);
-    string encrypted = Encryption.Encrypt(json, Consts.AES_KEY);
+    string encrypted = Encrypt(json, Consts.AES_KEY);
     return encrypted;
   }
 
-	/// <summary>
-	///   Decryptes a encrypted json based class.
-	/// </summary>
-	/// <param name="EncryptedConfigString">A encrypted json object to decrypt.</param>
-	/// <returns>Decrypt-safe config class.</returns>
-	public static SharedConfig? ReceiveConfig(string EncryptedConfigString)
+  /// <summary>
+  ///   Decryptes a encrypted json based class.
+  /// </summary>
+  /// <param name="EncryptedConfigString">A encrypted json object to decrypt.</param>
+  /// <returns>Decrypt-safe config class.</returns>
+  public static ConfigTemplate? ImportConfig(string EncryptedConfigString)
   {
-    string Decypted = Encryption.Decrypt(EncryptedConfigString, Consts.AES_KEY);
-    var extracted = JsonConvert.DeserializeObject<SharedConfig>(Decypted);
+    string Decypted = Decrypt(EncryptedConfigString, Consts.AES_KEY);
+    var extracted = JsonConvert.DeserializeObject<ConfigTemplate>(Decypted);
     return extracted;
   }
 
