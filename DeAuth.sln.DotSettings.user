@@ -1,0 +1,101 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:Boolean x:Key="/Default/CodeEditing/ContextActionTable/DisabledContextActions/=JetBrains_002EReSharper_002EIntentions_002ECSharp_002EContextActions_002ECheckParamNullAction/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeEditing/ContextActionTable/DisabledContextActions/=JetBrains_002EReSharper_002EIntentions_002ECSharp_002EContextActions_002ECheckVariableNullAction/@EntryIndexedValue">True</s:Boolean>
+	
+	<s:String x:Key="/Default/CodeEditing/Intellisense/CodeCompletion/IntellisenseGloballyEnabled/IntellisenseEnabled/@EntryValue">Disabled</s:String>
+	<s:Boolean x:Key="/Default/CodeEditing/TypingAssist/SkipClosingBracesOnTab/@EntryValue">False</s:Boolean>
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=44F7AF22_002DBB96_002D4EE2_002D9F1E_002D9236AD2F20CA_002Fd_003ABot_002Ff_003ABot_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
+	
+	
+	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=ArrangeThisQualifier/@EntryIndexedValue">SUGGESTION</s:String>
+	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=AssignNullToNotNullAttribute/@EntryIndexedValue">HINT</s:String>
+	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=CommentTypo/@EntryIndexedValue">DO_NOT_SHOW</s:String>
+	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=IdentifierTypo/@EntryIndexedValue">DO_NOT_SHOW</s:String>
+	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=InconsistentNaming/@EntryIndexedValue">DO_NOT_SHOW</s:String>
+	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=StringLiteralTypo/@EntryIndexedValue">DO_NOT_SHOW</s:String>
+	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=SuggestDiscardDeclarationVarStyle/@EntryIndexedValue">DO_NOT_SHOW</s:String>
+	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=SuggestVarOrType_005FBuiltInTypes/@EntryIndexedValue">DO_NOT_SHOW</s:String>
+	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=SuggestVarOrType_005FElsewhere/@EntryIndexedValue">DO_NOT_SHOW</s:String>
+	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=SuggestVarOrType_005FSimpleTypes/@EntryIndexedValue">DO_NOT_SHOW</s:String>
+	<s:Boolean x:Key="/Default/CodeInspection/Roslyn/LegacySeveritiesMigrated/@EntryValue">True</s:Boolean>
+	
+	
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CommonFormatter/SHOW_AUTODETECT_CONFIGURE_FORMATTING_TIP/@EntryValue">False</s:Boolean>
+	<s:String x:Key="/Default/CodeStyle/CodeFormatting/CSharpCodeStyle/BRACES_FOR_IFELSE/@EntryValue">RequiredForMultilineStatement</s:String>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/ALIGN_MULTILINE_BINARY_PATTERNS/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/ALIGN_MULTILINE_CALLS_CHAIN/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/ALIGN_MULTILINE_EXTENDS_LIST/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/ALIGN_MULTILINE_FOR_STMT/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/ALIGN_MULTILINE_PARAMETER/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/ALIGN_MULTILINE_SWITCH_EXPRESSION/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/ALIGN_MULTIPLE_DECLARATION/@EntryValue">True</s:Boolean>
+	<s:Int64 x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/BLANK_LINES_AROUND_MULTILINE_CASE_SECTION/@EntryValue">1</s:Int64>
+	<s:Int64 x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/BLANK_LINES_AROUND_NAMESPACE/@EntryValue">2</s:Int64>
+	<s:Int64 x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/BLANK_LINES_AROUND_SINGLE_LINE_TYPE/@EntryValue">0</s:Int64>
+	<s:Int64 x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/BLANK_LINES_BEFORE_MULTILINE_STATEMENTS/@EntryValue">1</s:Int64>
+	<s:Int64 x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/BLANK_LINES_INSIDE_NAMESPACE/@EntryValue">1</s:Int64>
+	<s:Int64 x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/BLANK_LINES_INSIDE_TYPE/@EntryValue">1</s:Int64>
+	<s:Int64 x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/CONTINUOUS_INDENT_MULTIPLIER/@EntryValue">2</s:Int64>
+	<s:String x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/INDENT_PREPROCESSOR_IF/@EntryValue">USUAL_INDENT</s:String>
+	<s:String x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/INDENT_PREPROCESSOR_OTHER/@EntryValue">USUAL_INDENT</s:String>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/INT_ALIGN_COMMENTS/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/INT_ALIGN_SWITCH_EXPRESSIONS/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/INT_ALIGN_SWITCH_SECTIONS/@EntryValue">True</s:Boolean>
+	<s:Int64 x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/KEEP_BLANK_LINES_IN_CODE/@EntryValue">1</s:Int64>
+	<s:Int64 x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/KEEP_BLANK_LINES_IN_DECLARATIONS/@EntryValue">1</s:Int64>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/KEEP_EXISTING_DECLARATION_PARENS_ARRANGEMENT/@EntryValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/OUTDENT_STATEMENT_LABELS/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/PLACE_SIMPLE_CASE_STATEMENT_ON_SAME_LINE/@EntryValue">IF_OWNER_IS_SINGLE_LINE</s:String>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/PLACE_WHILE_ON_NEW_LINE/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/SPACE_AFTER_TYPECAST_PARENTHESES/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/SPACE_AROUND_ARROW_OP/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/SPACE_WITHIN_CATCH_PARENTHESES/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/SPACE_WITHIN_FOR_PARENTHESES/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/SPACE_WITHIN_FOREACH_PARENTHESES/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/SPACE_WITHIN_SINGLE_LINE_ARRAY_INITIALIZER_BRACES/@EntryValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/SPACE_WITHIN_SWITCH_PARENTHESES/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/STICK_COMMENT/@EntryValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/WRAP_AFTER_DECLARATION_LPAR/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/WRAP_ARRAY_INITIALIZER_STYLE/@EntryValue">CHOP_ALWAYS</s:String>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/WRAP_BEFORE_DECLARATION_LPAR/@EntryValue">True</s:Boolean>
+	<s:Int64 x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/WRAP_LIMIT/@EntryValue">170</s:Int64>
+	<s:String x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/WRAP_OBJECT_AND_COLLECTION_INITIALIZER_STYLE/@EntryValue">CHOP_ALWAYS</s:String>
+	<s:String x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/WRAP_PARAMETERS_STYLE/@EntryValue">CHOP_IF_LONG</s:String>
+	<s:String x:Key="/Default/CodeStyle/CSharpVarKeywordUsage/ForBuiltInTypes/@EntryValue">UseVarWhenEvident</s:String>
+	<s:Boolean x:Key="/Default/CodeStyle/Naming/CSharpNaming/ApplyAutoDetectedRules/@EntryValue">False</s:Boolean>
+	<s:String x:Key="/Default/CustomTools/CustomToolsData/@EntryValue"></s:String>
+	<s:Boolean x:Key="/Default/Environment/AutoImport2/=CSHARP/BlackLists/=Microsoft_002EVisualBasic_002ECompilerServices/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/ExternalSources/Decompiler/DecompilerLegalNoticeAccepted/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/Feedback/ShouldPrompt/@EntryValue">False</s:Boolean>
+	
+	<s:Boolean x:Key="/Default/Environment/Hierarchy/NuGetOptions/ForceRemove/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=8ADD472D3C51744287966389F00E7B06/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=8ADD472D3C51744287966389F00E7B06/AbsolutePath/@EntryValue">C:\Users\arsh\Desktop\Untitled.DotSettings</s:String>
+	<s:String x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=8ADD472D3C51744287966389F00E7B06/RelativePath/@EntryValue">..\..\..\..\..\..\Desktop\Untitled.DotSettings</s:String>
+	<s:Boolean x:Key="/Default/Environment/InjectedLayers/InjectedLayerCustomization/=File8ADD472D3C51744287966389F00E7B06/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/Environment/InjectedLayers/InjectedLayerCustomization/=File8ADD472D3C51744287966389F00E7B06/DisplayName/@EntryValue">arsh</s:String>
+	<s:Double x:Key="/Default/Environment/InjectedLayers/InjectedLayerCustomization/=File8ADD472D3C51744287966389F00E7B06/RelativePriority/@EntryValue">1</s:Double>
+	<s:String x:Key="/Default/Environment/InlayHints/CSharpTypeConversionHintsOptions/ShowTypeConversionHints/@EntryValue">Never</s:String>
+	<s:String x:Key="/Default/Environment/InlayHints/GeneralInlayHintsOptions/DefaultMode/@EntryValue">PushToShowHints</s:String>
+	<s:String x:Key="/Default/Environment/PerformanceGuide/SwitchBehaviour/=Antivirus/@EntryIndexedValue">DO_NOTHING</s:String>
+	<s:String x:Key="/Default/Environment/PerformanceGuide/SwitchBehaviour/=VCS/@EntryIndexedValue">DO_NOTHING</s:String>
+	<s:Int64 x:Key="/Default/Environment/SearchAndNavigation/DefaultOccurrencesGroupingIndices/=JetBrains_002EReSharper_002EFeatures_002EInspections_002EAnalyzeReferences_002EAnalyzeReferencesDescriptor/@EntryIndexedValue">2</s:Int64>
+	<s:Boolean x:Key="/Default/Environment/SettingsMigration/IsMigratorApplied/=JetBrains_002EReSharper_002EPsi_002ECSharp_002ECodeStyle_002ECSharpKeepExistingMigration/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/SettingsMigration/IsMigratorApplied/=JetBrains_002EReSharper_002EPsi_002ECSharp_002ECodeStyle_002ECSharpPlaceEmbeddedOnSameLineMigration/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/SettingsMigration/IsMigratorApplied/=JetBrains_002EReSharper_002EPsi_002ECSharp_002ECodeStyle_002ECSharpUseContinuousIndentInsideBracesMigration/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/SettingsMigration/IsMigratorApplied/=JetBrains_002EReSharper_002EPsi_002ECSharp_002ECodeStyle_002ESettingsUpgrade_002EMigrateBlankLinesAroundFieldToBlankLinesAroundProperty/@EntryIndexedValue">True</s:Boolean>
+	
+	<s:Boolean x:Key="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=EditorConfigFeatureSuggester/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=NullabilityAnnotationAssistSuggester/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=ReSharperCppFeatureSuggester/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=SwitchToGoToActionSuggester/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=TabNavigationExplainer/@EntryIndexedValue">True</s:Boolean>
+	<s:String x:Key="/Default/Housekeeping/FeedbackReport/SelectedUserIdentificator/@EntryValue">anonymous</s:String>
+	<s:Boolean x:Key="/Default/Housekeeping/GlobalSettingsUpgraded/IsUpgraded/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/LiveTemplatesHousekeeping/HotspotSessionHintIsShown/@EntryValue">True</s:Boolean>
+	
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/QuickList/=F0CA621CDF5AB24282D8CDC11C520997/Entry/=2CBD6971A7955044AD2624B84FB49E38/Position/@EntryValue">9</s:Int64>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/QuickList/=F0CA621CDF5AB24282D8CDC11C520997/Entry/=567DCF4B487C244A9F6BB46E4E9F3B84/Position/@EntryValue">6</s:Int64>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/QuickList/=F0CA621CDF5AB24282D8CDC11C520997/Entry/=7F2A1BE8D0078241A9AE7802038BAD3C/Position/@EntryValue">7</s:Int64>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/QuickList/=F0CA621CDF5AB24282D8CDC11C520997/Entry/=C4795E57DDEC1C4F97BBC8C7173EBBCA/Position/@EntryValue">8</s:Int64>
+	<s:Boolean x:Key="/Default/RiderDebugger/RiderRestoreDecompile/RestoreDecompileSetting/@EntryValue">False</s:Boolean></wpf:ResourceDictionary>
