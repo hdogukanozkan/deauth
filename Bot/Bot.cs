@@ -133,7 +133,7 @@ public class Bot
   /// </summary>
   private static async Task ClientOnReady(DiscordClient client, ReadyEventArgs e)
   {
-    await client.UpdateStatusAsync(new DiscordActivity("/help", ActivityType.Playing));
+    await client.UpdateStatusAsync(new DiscordActivity($"/help | {Consts.PAGE}", ActivityType.Playing));
   }
 
   /// <summary>
