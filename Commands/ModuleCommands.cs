@@ -135,6 +135,14 @@ public class ModuleCommands : ApplicationCommandModule
             emoji: new DiscordComponentEmoji("➖"))
     );
 
+    SelectOptions.Add(new DiscordSelectComponentOption
+        (
+            label: "Custom",
+            description: "Choose it yourself.",
+            value: "agelimit_custom",
+            emoji: new DiscordComponentEmoji("🔵"))
+    );
+
     #endregion
 
     var SelectMenu = new DiscordSelectComponent("d1", "Ban the accounts that younger than", SelectOptions);
@@ -168,11 +176,36 @@ public class ModuleCommands : ApplicationCommandModule
       case "agelimit_3m":
         BanDays = 90;
         break;
+
+      case "agelimit_custom":
+        var nextMsg = Builders.WaitMessage(c, "Age Limit", "🔹 Please specify the limit as **DAYS**. (Ex: **10**, **30**)").GetAwaiter().GetResult();
+
+        if (nextMsg == null)
+        {
+          await Builders.Edit(c, "You forgot me :(", "🔸 Aborted.");
+          return;
+        }
+
+        if (!int.TryParse(nextMsg.Content, out BanDays))
+        {
+          await Builders.Edit(c, "Wrong Format", "🔸 Please just specify as days. Do not enter characters.");
+          return;
+        }
+
+        try
+        {
+          await c.Channel.DeleteMessageAsync(nextMsg);
+        }
+        catch
+        {
+        }
+
+        break;
     }
 
     DateTime when = DateTime.Now.AddDays(-BanDays);
     cfg.AgeLimit = when;
-    await Builders.Edit(c, "Limited OUT", $"🔹 Age limit is **enabled**. **DeAuth** will ban the members that younger than **{when.ToLogicalString()}**.");
+    await Builders.Edit(c, "Limited OUT", $"🔹 Age limit is **enabled**. **DeAuth** will ban the new members that younger than **{when.ToLogicalString()}**.");
   }
 
 }
