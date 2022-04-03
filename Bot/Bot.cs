@@ -14,7 +14,7 @@ public class Bot
     {
         Token = "OTQ2MTMzNzU0NzY4OTIwNTc2.YhaRuQ.EYLvEWVgEPu_iVrsX2c8OkGx5q8",
         TokenType = TokenType.Bot,
-        Intents = DiscordIntents.GuildMembers | DiscordIntents.Guilds,
+        Intents = DiscordIntents.GuildMembers | DiscordIntents.Guilds | DiscordIntents.GuildMessages,
         MinimumLogLevel = LogLevel.Information
     });
 
@@ -167,7 +167,7 @@ public class Bot
       // Get the latest join time of suspicious user.
       double TotalJoinDelay = (DateTimeOffset.Now - Consts.SuspiciousCounter[e.Guild]).TotalSeconds;
 
-      if (e.Member.IsSuspicious()) // Increase the counter of sus users in dict.
+      if (e.Member.CalculateSuspiciously()) // Increase the counter of sus users in dict.
       {
         if (TotalJoinDelay < 10)
         {
@@ -265,7 +265,7 @@ public class Bot
                                                                                                       .AddEmbed(
                                                                                                           Builders.BasicEmbed("Locked",
                                                                                                               $"🔸 Sorry but this server not accepts users that are from **{Country}**."))
-                                                                                                      .AsEphemeral(true));
+                                                                                                      .AsEphemeral());
             Utils.Log(e.Guild, member, LogType.CDIS);
             return;
           }
