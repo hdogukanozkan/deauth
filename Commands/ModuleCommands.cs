@@ -1,6 +1,6 @@
 ﻿namespace DeAuth.Commands;
 
-[RequireUserPermissions(Permissions.Administrator, false)]
+[SlashRequireUserPermissions(Permissions.Administrator)]
 [VerificationDependency("Extra modules only can be used when verification is enabled.")]
 [SlashCommandGroup("module", "Powerfully extra protection modules for your server.")]
 public class ModuleCommands : ApplicationCommandModule

@@ -36,7 +36,7 @@ public class GeneralCommands : ApplicationCommandModule
     await c.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(embed).AddComponents(components));
   }
 
-  [RequireUserPermissions(Permissions.Administrator, false)]
+  [SlashRequireUserPermissions(Permissions.Administrator)]
   [VerificationDependency("You cannot make cleanup without verification enabled.")]
   [SlashCommand("cleanup", "Prune your members from the server.")]
   public async Task CLUP(InteractionContext c)
@@ -100,7 +100,7 @@ public class GeneralCommands : ApplicationCommandModule
     }
   }
 
-  [RequireUserPermissions(Permissions.Administrator, false)]
+  [SlashRequireUserPermissions(Permissions.Administrator)]
   [SlashCommand("manage", "Manage the logs and users.")]
   public async Task ManageLogs(InteractionContext c)
   {
@@ -228,7 +228,7 @@ public class GeneralCommands : ApplicationCommandModule
     await Builders.Edit(c, "Done!", $"🔹 {ActionResult}");
   }
 
-  [RequireUserPermissions(Permissions.Administrator, false)]
+  [SlashRequireUserPermissions(Permissions.Administrator)]
   [SlashCommand("logs", "Show the full list of verify logs.")]
   public async Task ShowLogs(InteractionContext c)
   {
@@ -299,7 +299,7 @@ public class GeneralCommands : ApplicationCommandModule
         Description = $"⟩ Member **/** {User.Mention}\n" +
                       $"⟩ Joined **/** `{User.JoinedAt.ToString()}`\n" +
                       $"⟩ Created **/** `{User.CreationTimestamp.ToString()}`\n" +
-                      $"⟩ Verify Status **/** `{Config.Attempts.FirstOrDefault(x => x.UserID == User.Id)?.Status.ToString() ?? "Unkown"}`\n\n\n",
+                      $"⟩ Verify Status **/** `{Config?.Attempts?.FirstOrDefault(x => x.UserID == User.Id)?.Status.ToString() ?? "Unkown"}`\n\n\n",
         Footer = new DiscordEmbedBuilder.EmbedFooter
             {Text = "Deauth"}
     };
