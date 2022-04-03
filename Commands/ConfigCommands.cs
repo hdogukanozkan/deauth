@@ -116,19 +116,19 @@ public class ConfigCommands : ApplicationCommandModule
           }
       };
 
-      embed.AddField("Verify Settings",
+      embed.AddField("🔸 Verify Settings",
           $"᲼᲼・Quarantine Role ⟩ {rm}\n" +
           $"᲼᲼・Verify Channel ⟩ {vm}\n" +
           $"᲼᲼・Logging Channel ⟩ {lm}\n" +
           $"᲼᲼・DM Message ⟩ {cfg.WelcomeMessage ?? "**None**"}");
 
-      embed.AddField("Captcha Settings",
+      embed.AddField("🔸 Captcha Settings",
           $"᲼᲼・Verify Fail ⟩ **{cfg.CaptchaOptions.OnVerifyFail}**\n" +
           $"᲼᲼・Length ⟩ **{cfg.CaptchaOptions.Length}**\n" +
           $"᲼᲼・Mode ⟩ **{cfg.CaptchaOptions.Mode}**\n");
 
-      embed.AddField("Modules (/module)",
-          $"᲼᲼・Account Age Limit ⟩ **{(cfg.AgeLimit != null ? $"{cfg.AgeLimit.Value.ToLogicalString()}" : "False")}**\n" +
+      embed.AddField("🔸 Modules",
+          $"᲼᲼・Age Limit ⟩ **{(cfg.AgeLimit != null ? $"{cfg.AgeLimit.Value.ToLogicalString()}" : "False")}**\n" +
           $"᲼᲼・Country Disallowing ⟩ **{(cfg.Locale != null ? $"{cfg.Locale}" : "False")}**\n" +
           $"᲼᲼・Anti Raid ⟩ **{cfg.AntiRaid}**");
 
