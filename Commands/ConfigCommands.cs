@@ -60,7 +60,7 @@ public class ConfigCommands : ApplicationCommandModule
         new DiscordInteractionResponseBuilder().AsEphemeral());
 
     Config cfg = Utils.GetConfig(c.Guild);
-    bool ShowConfig = FailOperation == null && CaptchaLength == null && LogChannel == null && captchaMode == null && WelcomeMessage == null;
+    bool ShowConfig = FailOperation == null && CaptchaLength == null && LogChannel == null && captchaMode == null && WelcomeMessage == null && quarantineType == null;
 
     if (ShowConfig)
     {
@@ -104,8 +104,6 @@ public class ConfigCommands : ApplicationCommandModule
 
       var embed = new DiscordEmbedBuilder
       {
-          Title = "Config",
-          Description = "See your current config options",
           Author = new DiscordEmbedBuilder.EmbedAuthor
           {
               Name = c.Guild.Name,
@@ -122,7 +120,7 @@ public class ConfigCommands : ApplicationCommandModule
           $"᲼᲼・Quarantine Role ⟩ {rm}\n" +
           $"᲼᲼・Verify Channel ⟩ {vm}\n" +
           $"᲼᲼・Logging Channel ⟩ {lm}\n" +
-          $"᲼᲼・DM Message ⟩ {cfg?.WelcomeMessage ?? "**None**"}");
+          $"᲼᲼・DM Message ⟩ {cfg.WelcomeMessage ?? "**None**"}");
 
       embed.AddField("Captcha Settings",
           $"᲼᲼・Verify Fail ⟩ **{cfg.CaptchaOptions.OnVerifyFail}**\n" +

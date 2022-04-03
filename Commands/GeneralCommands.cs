@@ -299,7 +299,7 @@ public class GeneralCommands : ApplicationCommandModule
         Description = $"⟩ Member **/** {User.Mention}\n" +
                       $"⟩ Joined **/** `{User.JoinedAt.ToString()}`\n" +
                       $"⟩ Created **/** `{User.CreationTimestamp.ToString()}`\n" +
-                      $"⟩ Verify Status **/** `{Config?.Attempts?.FirstOrDefault(x => x.UserID == User.Id)?.Status.ToString() ?? "Unkown"}`\n\n\n",
+                      $"⟩ Verify Status **/** `{Config.Attempts.FirstOrDefault(x => x.UserID == User.Id)?.Status.ToString() ?? "Unkown"}`\n\n\n",
         Footer = new DiscordEmbedBuilder.EmbedFooter
             {Text = "Deauth"}
     };
