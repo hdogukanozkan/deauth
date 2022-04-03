@@ -5,223 +5,6 @@ public static class Utils
 
   private static readonly DiscordClient? client = Bot.Bot._client;
 
-  /// <summary>
-  ///   Returns config of specific guild.
-  /// </summary>
-  public static Config GetConfig(DiscordGuild guild)
-  {
-    return Consts.Config.First(x => x.GuildID == guild.Id);
-  }
-
-  /// <summary>
-  ///   Logs specific log header to log channel.
-  /// </summary>
-  public static void Log(DiscordGuild guild, DiscordMember member, LogType Type)
-  {
-    string Title = "", Description = "";
-    DiscordColor color = DiscordColor.Gold;
-
-    Config Guild = GetConfig(guild);
-    ulong channel = Guild.LogChannel;
-
-    // If logger isnt enabled or verification isnt enabled return;
-    if (Guild.LogChannel == 0 || !Guild.Enabled)
-    {
-      return;
-    }
-
-    switch ( Type )
-    {
-      case LogType.Join:
-        Title = "Member Joined";
-
-        Description = $">>> {member.Mention} has joined to the server. Waiting for **verification**... \n\n" +
-                      $"✓ Created on **/** `({member.CreationTimestamp:dd/MM/yyyy HH:mm:ss})`\n";
-        color = DiscordColor.Blurple;
-        break;
-
-      case LogType.Verify:
-        string elapsed_v_time = (DateTime.Now - member.JoinedAt).ToLogicalString();
-        Title = "Member Verified";
-
-        Description = $"> {member.Mention} has been successfully verified.\n\n" +
-                      $"✓ Elapsed Verify Time **/** `{elapsed_v_time}`\n";
-        color = DiscordColor.Green;
-        break;
-
-      case LogType.VFail:
-        Title = "Member Kicked";
-
-        Description =
-            $">>> {member.Mention} has been **{(Guild.CaptchaOptions.OnVerifyFail == VerifyFail.Kick ? "Kicked" : "Banned")}** due `Captcha Verify Fail` mode.\n\n";
-        color = DiscordColor.Red;
-        break;
-
-      case LogType.AgeLimit:
-        Title = "Member Kicked";
-
-        if (Guild.AgeLimit != null)
-        {
-          Description = $"> {member.Mention} has been banned auto due to **Age limit**.\n\n" +
-                        $"・Current age limit: `{Guild.AgeLimit} | ({Guild.AgeLimit.Value.Day})` days.\n" +
-                        $"・User account age: `{member.CreationTimestamp}`";
-        }
-
-        color = DiscordColor.Red;
-        break;
-
-      case LogType.BotJoined:
-        Title = "Bot Added";
-        Description = $">>> A bot {member.Mention} is added to server and quarantined. Check the bot before removing quarantine from it.\n\n";
-        color = DiscordColor.Red;
-        break;
-
-      case LogType.RaidDetected:
-        Title = "Raid Detected";
-        Description = $">>> After we detect suspicious joining activity of your server, we determined {member.Mention} as raider. So it banned.\n\n";
-        color = DiscordColor.Red;
-        break;
-
-      case LogType.CDIS:
-        Title = "Country Disallowing";
-        Description = $">>> Member {member.Mention}'s country wasn't matching with server's country. It banned.\n\n";
-        color = DiscordColor.Red;
-        break;
-
-      default: throw new ArgumentOutOfRangeException(nameof(Type), Type, null);
-    }
-
-    DiscordEmbed embed = Builders.BuildEmbed(member, Title, Description, color, true);
-    guild.GetChannel(channel).SendMessageAsync(embed);
-  }
-
-  #region Panel-Verification Utils
-
-  /// <summary>
-  ///   Removes all verify roles, channels in server. Also cleares and creates a new config for the guild from the config.
-  /// </summary>
-  /// <param name="Guild">Guild to clear.</param>
-  public static async Task RemovePanel(DiscordGuild Guild)
-  {
-    #region Clear channels and roles
-
-    // Delete channel overwrites.
-    try
-    {
-      foreach ( (ulong _, DiscordChannel? channel) in Guild.Channels )
-        if (channel.Name == Consts.VERIFY_CHANNEL_NAME) // Delete if channel is verification channel.
-        {
-          await channel.DeleteAsync();
-        }
-    }
-    catch
-    {
-      // ignored
-    }
-
-    // Delete Quarantine roles
-    try
-    {
-      foreach ( var role in Guild.Roles.Where(x => x.Value.Name == Consts.QUARANTINE_ROLE_NAME) )
-        await role.Value.DeleteAsync();
-    }
-    catch
-    {
-    }
-
-    #endregion
-  }
-
-  /// <summary>
-  ///   Creates a new verification channels, roles and panels for guild
-  /// </summary>
-  /// <param name="Guild">Guild to clear.</param>
-  public static async Task<DiscordChannel> CreatePanel(DiscordGuild Guild, string PanelTitle, string PanelDesc, string ButtonText)
-  {
-    await RemovePanel(Guild); // Delete old verification traces.
-    Config guild = GetConfig(Guild);
-    DiscordRole? Role = guild.GetQuarantineRole();
-
-    #region Override Channels
-
-    // Override the verification panel channel permissions. Set to Commands.QuarantineRoleName roled users can see it.
-    var channels = Guild.Channels;
-
-    foreach ( var channel in channels )
-      try
-      {
-        await channel.Value.AddOverwriteAsync(Role, Permissions.None, Permissions.AccessChannels);
-      }
-      catch
-      {
-      }
-
-    #endregion
-
-    #region Create Verification Panel
-
-    // Create overwritten verification channel.
-    var overwrites = new List<DiscordOverwriteBuilder>
-    {
-        new DiscordOverwriteBuilder // Verified users shouldn't see this channel.
-                (Guild.EveryoneRole)
-            .Deny(Permissions.AccessChannels),
-        new DiscordOverwriteBuilder // Allow verify for non-verifed users.
-                (Role)
-            .Allow(Permissions.AccessChannels)
-    };
-    DiscordChannel verificationChannel;
-
-    try
-    {
-      verificationChannel = await Guild.CreateChannelAsync(Consts.VERIFY_CHANNEL_NAME, ChannelType.Text, overwrites: overwrites);
-    }
-    catch
-    {
-      throw new DException(":(",
-          $"Failed to create verification channel. [Check the bot permissions]({Consts.DOCUMENTATION_GITBOOK + "/extra/issues#permissions"})");
-    }
-
-    #endregion
-
-    #region Initialize Components
-
-    DiscordMessageBuilder? Modal = new DiscordMessageBuilder()
-                                   .AddEmbed(new DiscordEmbedBuilder
-                                   {
-                                       Title = PanelTitle,
-                                       Description = PanelDesc,
-                                       Author = new DiscordEmbedBuilder.EmbedAuthor
-                                           {IconUrl = Guild?.IconUrl, Name = Guild.Name},
-                                       Footer = new DiscordEmbedBuilder.EmbedFooter
-                                           {Text = "DeAuth Verification"},
-                                       Color = DiscordColor.Grayple
-                                   })
-                                   .AddComponents(new DiscordButtonComponent(ButtonStyle.Primary, Consts.VERIFY_COMPONENT_ID, ButtonText));
-
-    #endregion
-
-    #region Overwrite config
-
-    try
-    {
-      await verificationChannel.SendMessageAsync(Modal);
-    }
-    catch
-    {
-      throw new DException("Failed to send message!", "Failed to send message to verification channel! check if bot is setup correctly.");
-    }
-
-    guild.Enabled = true;
-    guild.VerifyChannel = verificationChannel.Id;
-
-    #endregion
-
-    return verificationChannel;
-  }
-
-  #endregion
-
   private static readonly Dictionary<string, string> CountryCodes = new()
   {
       {"EN", "United States"},
@@ -978,8 +761,98 @@ public static class Utils
 
       {
           "AX", "Åland Islands"
-      },
+      }
   };
+
+  /// <summary>
+  ///   Returns config of specific guild.
+  /// </summary>
+  public static Config GetConfig(DiscordGuild guild)
+  {
+    return Consts.Config.First(x => x.GuildID == guild.Id);
+  }
+
+  /// <summary>
+  ///   Logs specific log header to log channel.
+  /// </summary>
+  public static void Log(DiscordGuild guild, DiscordMember member, LogType Type)
+  {
+    string Title = "", Description = "";
+    DiscordColor color = DiscordColor.Gold;
+
+    Config Guild = GetConfig(guild);
+    ulong channel = Guild.LogChannel;
+
+    // If logger isnt enabled or verification isnt enabled return;
+    if (Guild.LogChannel == 0 || !Guild.Enabled)
+    {
+      return;
+    }
+
+    switch ( Type )
+    {
+      case LogType.Join:
+        Title = "Member Joined";
+
+        Description = $">>> {member.Mention} has joined to the server. Waiting for **verification**... \n\n" +
+                      $"✓ Created on **/** `({member.CreationTimestamp:dd/MM/yyyy HH:mm:ss})`\n";
+        color = DiscordColor.Blurple;
+        break;
+
+      case LogType.Verify:
+        string elapsed_v_time = (DateTime.Now - member.JoinedAt).ToLogicalString();
+        Title = "Member Verified";
+
+        Description = $"> {member.Mention} has been successfully verified.\n\n" +
+                      $"✓ Elapsed Verify Time **/** `{elapsed_v_time}`\n";
+        color = DiscordColor.Green;
+        break;
+
+      case LogType.VFail:
+        Title = "Member Kicked";
+
+        Description =
+            $">>> {member.Mention} has been **{(Guild.CaptchaOptions.OnVerifyFail == VerifyFail.Kick ? "Kicked" : "Banned")}** due `Captcha Verify Fail` mode.\n\n";
+        color = DiscordColor.Red;
+        break;
+
+      case LogType.AgeLimit:
+        Title = "Member Kicked";
+
+        if (Guild.AgeLimit != null)
+        {
+          Description = $"> {member.Mention} has been banned auto due to **Age limit**.\n\n" +
+                        $"・Current age limit: `{Guild.AgeLimit} | ({Guild.AgeLimit.Value.Day})` days.\n" +
+                        $"・User account age: `{member.CreationTimestamp}`";
+        }
+
+        color = DiscordColor.Red;
+        break;
+
+      case LogType.BotJoined:
+        Title = "Bot Added";
+        Description = $">>> A bot {member.Mention} is added to server and quarantined. Check the bot before removing quarantine from it.\n\n";
+        color = DiscordColor.Red;
+        break;
+
+      case LogType.RaidDetected:
+        Title = "Raid Detected";
+        Description = $">>> After we detect suspicious joining activity of your server, we determined {member.Mention} as raider. So it banned.\n\n";
+        color = DiscordColor.Red;
+        break;
+
+      case LogType.CDIS:
+        Title = "Country Disallowing";
+        Description = $">>> Member {member.Mention}'s country wasn't matching with server's country. It banned.\n\n";
+        color = DiscordColor.Red;
+        break;
+
+      default: throw new ArgumentOutOfRangeException(nameof(Type), Type, null);
+    }
+
+    DiscordEmbed embed = Builders.BuildEmbed(member, Title, Description, color, true);
+    guild.GetChannel(channel).SendMessageAsync(embed);
+  }
 
   /// <summary>
   ///   Gets country name with TwoLetterISOCode.
@@ -992,5 +865,132 @@ public static class Utils
     string Country = CountryCodes[Locale.TwoLetterISOLanguageName.ToUpper()];
     return Country;
   }
+
+  #region Panel-Verification Utils
+
+  /// <summary>
+  ///   Removes all verify roles, channels in server. Also cleares and creates a new config for the guild from the config.
+  /// </summary>
+  /// <param name="Guild">Guild to clear.</param>
+  public static async Task RemovePanel(DiscordGuild Guild)
+  {
+    #region Clear channels and roles
+
+    // Delete channel overwrites.
+    try
+    {
+      foreach ( (ulong _, DiscordChannel? channel) in Guild.Channels )
+        if (channel.Name == Consts.VERIFY_CHANNEL_NAME) // Delete if channel is verification channel.
+        {
+          await channel.DeleteAsync();
+        }
+    }
+    catch
+    {
+      // ignored
+    }
+
+    // Delete Quarantine roles
+    try
+    {
+      foreach ( var role in Guild.Roles.Where(x => x.Value.Name == Consts.QUARANTINE_ROLE_NAME) )
+        await role.Value.DeleteAsync();
+    }
+    catch
+    {
+    }
+
+    #endregion
+  }
+
+  /// <summary>
+  ///   Creates a new verification channels, roles and panels for guild
+  /// </summary>
+  /// <param name="Guild">Guild to clear.</param>
+  public static async Task<DiscordChannel> CreatePanel(DiscordGuild Guild, string PanelTitle, string PanelDesc, string ButtonText)
+  {
+    await RemovePanel(Guild); // Delete old verification traces.
+    Config guild = GetConfig(Guild);
+    DiscordRole? Role = guild.GetQuarantineRole();
+
+    #region Override Channels
+
+    // Override the verification panel channel permissions. Set to Commands.QuarantineRoleName roled users can see it.
+    var channels = Guild.Channels;
+
+    foreach ( var channel in channels )
+      try
+      {
+        await channel.Value.AddOverwriteAsync(Role, Permissions.None, Permissions.AccessChannels);
+      }
+      catch
+      {
+      }
+
+    #endregion
+
+    #region Create Verification Panel
+
+    // Create overwritten verification channel.
+    var overwrites = new List<DiscordOverwriteBuilder>
+    {
+        new DiscordOverwriteBuilder // Verified users shouldn't see this channel.
+                (Guild.EveryoneRole)
+            .Deny(Permissions.AccessChannels),
+        new DiscordOverwriteBuilder // Allow verify for non-verifed users.
+                (Role)
+            .Allow(Permissions.AccessChannels)
+    };
+    DiscordChannel verificationChannel;
+
+    try
+    {
+      verificationChannel = await Guild.CreateChannelAsync(Consts.VERIFY_CHANNEL_NAME, ChannelType.Text, overwrites: overwrites);
+    }
+    catch
+    {
+      throw new DException(":(",
+          $"Failed to create verification channel. [Check the bot permissions]({Consts.DOCUMENTATION_GITBOOK + "/extra/issues#permissions"})");
+    }
+
+    #endregion
+
+    #region Initialize Components
+
+    DiscordMessageBuilder? Modal = new DiscordMessageBuilder()
+                                   .AddEmbed(new DiscordEmbedBuilder
+                                   {
+                                       Title = PanelTitle,
+                                       Description = PanelDesc,
+                                       Author = new DiscordEmbedBuilder.EmbedAuthor
+                                           {IconUrl = Guild?.IconUrl, Name = Guild.Name},
+                                       Footer = new DiscordEmbedBuilder.EmbedFooter
+                                           {Text = "DeAuth Verification"},
+                                       Color = DiscordColor.Grayple
+                                   })
+                                   .AddComponents(new DiscordButtonComponent(ButtonStyle.Primary, Consts.VERIFY_COMPONENT_ID, ButtonText));
+
+    #endregion
+
+    #region Overwrite config
+
+    try
+    {
+      await verificationChannel.SendMessageAsync(Modal);
+    }
+    catch
+    {
+      throw new DException("Failed to send message!", "Failed to send message to verification channel! check if bot is setup correctly.");
+    }
+
+    guild.Enabled = true;
+    guild.VerifyChannel = verificationChannel.Id;
+
+    #endregion
+
+    return verificationChannel;
+  }
+
+  #endregion
 
 }

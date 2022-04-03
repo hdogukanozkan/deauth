@@ -11,6 +11,7 @@ public static class Consts
   public const string QUARANTINE_ROLE_NAME  = "Quarantine";                      // Quarantine role name
   public const string VERIFY_CHANNEL_NAME   = "verify";                          // Verify channel name that will created
   public const string DOCUMENTATION_GITBOOK = "https://arsh3.gitbook.io/deauth"; // Documentation gitbook
+  public const string PAGE                  = "https://arsh-3.github.io/deauth/";
 
   /// <summary> Calculates the joining time of suspicious users. </summary>
   public static readonly ConcurrentDictionary<DiscordGuild, DateTimeOffset> SuspiciousCounter = new();

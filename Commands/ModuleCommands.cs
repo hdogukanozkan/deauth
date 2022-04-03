@@ -105,7 +105,7 @@ public class ModuleCommands : ApplicationCommandModule
 
     SelectOptions.Add(new DiscordSelectComponentOption
         (
-            label: "3 Day",
+            "3 Day",
             description: "Just keep away the new accounts!",
             value: "agelimit_3d",
             emoji: new DiscordComponentEmoji("👋"))
@@ -113,7 +113,7 @@ public class ModuleCommands : ApplicationCommandModule
 
     SelectOptions.Add(new DiscordSelectComponentOption
         (
-            label: "1 Week",
+            "1 Week",
             description: "Ideal value for small servers.",
             value: "agelimit_1w",
             emoji: new DiscordComponentEmoji("🌑"))
@@ -121,7 +121,7 @@ public class ModuleCommands : ApplicationCommandModule
 
     SelectOptions.Add(new DiscordSelectComponentOption
     (
-        label: "1 Month",
+        "1 Month",
         description: "Good for most server.",
         value: "agelimit_1m",
         emoji: new DiscordComponentEmoji("☄")
@@ -129,7 +129,7 @@ public class ModuleCommands : ApplicationCommandModule
 
     SelectOptions.Add(new DiscordSelectComponentOption
         (
-            label: "3 Month",
+            "3 Month",
             description: "Heavily protected server.",
             value: "agelimit_3m",
             emoji: new DiscordComponentEmoji("➖"))
@@ -137,7 +137,7 @@ public class ModuleCommands : ApplicationCommandModule
 
     SelectOptions.Add(new DiscordSelectComponentOption
         (
-            label: "Custom",
+            "Custom",
             description: "Choose it yourself.",
             value: "agelimit_custom",
             emoji: new DiscordComponentEmoji("🔵"))
@@ -146,13 +146,14 @@ public class ModuleCommands : ApplicationCommandModule
     #endregion
 
     var SelectMenu = new DiscordSelectComponent("d1", "Ban the accounts that younger than", SelectOptions);
+
     string DropdownResult = Builders
                             .WaitDropdown("Age Limit", "🔹 Pick up an time to put account age limit into server.",
                                 SelectMenu, c)
                             .GetAwaiter().GetResult().Result.Values.First();
 
-    
-    int BanDays = 0;
+    var BanDays = 0;
+
     switch ( DropdownResult )
     {
       case null:
@@ -177,7 +178,7 @@ public class ModuleCommands : ApplicationCommandModule
         break;
 
       case "agelimit_custom":
-        var nextMsg = Builders.WaitMessage(c, "Age Limit", "🔹 Please specify the limit as **DAYS**. (Ex: **10**, **30**)").GetAwaiter().GetResult();
+        DiscordMessage? nextMsg = Builders.WaitMessage(c, "Age Limit", "🔹 Please specify the limit as **DAYS**. (Ex: **10**, **30**)").GetAwaiter().GetResult();
 
         if (nextMsg == null)
         {

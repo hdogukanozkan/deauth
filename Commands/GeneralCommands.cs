@@ -12,7 +12,7 @@ public class GeneralCommands : ApplicationCommandModule
     var embed = new DiscordEmbedBuilder
     {
         Title = "Help",
-        Description = $"**⟩** [DeAuth]({Consts.DOCUMENTATION_GITBOOK}) is a **security/verification** discord bot. Aimed to automate your" +
+        Description = $"**⟩** [DeAuth]({Consts.PAGE}) is a **security/verification** discord bot. Aimed to automate your" +
                       " verification processes and provide a **secure & efficient** way to **verify** your members and keeping out the bot/spam accounts from your server.",
         Color = DiscordColor.VeryDarkGray
     };
@@ -27,9 +27,8 @@ public class GeneralCommands : ApplicationCommandModule
     {
         new(new List<DiscordLinkButtonComponent>
         {
+            new(Consts.PAGE, "Bot Page"),
             new($"{Consts.DOCUMENTATION_GITBOOK}/setup/enabling-verification", "Quick Setup"),
-            new($"{Consts.DOCUMENTATION_GITBOOK}/basics/configuration", "Configs"),
-            new($"{Consts.DOCUMENTATION_GITBOOK}/extra/issues", "Issues"),
             new(Consts.DOCUMENTATION_GITBOOK, "Full Docs")
         })
     };
@@ -47,7 +46,7 @@ public class GeneralCommands : ApplicationCommandModule
 
     var SelectOptions = new List<DiscordSelectComponentOption>
     {
-        new DiscordSelectComponentOption("Force to verify", description: "Quarantine all users and force them to verify itselfs.", value: "q_all",
+        new("Force to verify", description: "Quarantine all users and force them to verify itselfs.", value: "q_all",
             emoji: new DiscordComponentEmoji("🌑"))
     };
 
