@@ -1,6 +1,6 @@
 ﻿namespace DeAuth.Bot;
 
-public class Serializers
+class Serializers
 {
 
   /// <summary>
@@ -8,7 +8,7 @@ public class Serializers
   /// </summary>
   /// <param name="FilePath">File path to take source from xml file.</param>
   /// <returns>Deserialized XML Object.</returns>
-  public static List<Config> DeSerialize(string FilePath = "Config.xml")
+  protected static List<Config> DeSerialize(string FilePath = "Config.xml")
   {
     var serializer = new XmlSerializer(typeof(List<Config>));
 
@@ -21,7 +21,7 @@ public class Serializers
   /// <summary>
   ///   Serializes an object to an XML file
   /// </summary>
-  public static void Serialize(string FilePath = "Config.xml")
+  protected static void Serialize(string FilePath = "Config.xml")
   {
     try
     {

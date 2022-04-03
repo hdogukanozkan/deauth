@@ -65,8 +65,7 @@ public class SetupCommands : ApplicationCommandModule
 
     await Builders.Edit(c, "Enabled", $"🔹 **Verification** successfully enabled. ({panelChannel.Mention})\n" +
                                       $"・ See the [Docs]({Consts.DOCUMENTATION_GITBOOK}) for configuration **docs**.");
-
-    Serializers.Serialize();
+    
   }
 
   [VerificationDependency("・Verification not enabled already.\n")]
@@ -100,8 +99,7 @@ public class SetupCommands : ApplicationCommandModule
     await Utils.RemovePanel(c.Guild);
     guild.Reload();
     await Builders.Edit(c, "Cleared", "🔹 Verification successfully removed from server. All verification data has been removed.");
-
-    Serializers.Serialize();
+    
   }
 
 }

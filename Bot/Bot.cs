@@ -1,6 +1,6 @@
 ﻿namespace DeAuth.Bot;
 
-public class Bot
+internal class Bot : Serializers
 {
 
   public static DiscordClient? _client;
