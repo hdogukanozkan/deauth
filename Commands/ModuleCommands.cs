@@ -146,14 +146,13 @@ public class ModuleCommands : ApplicationCommandModule
     #endregion
 
     var SelectMenu = new DiscordSelectComponent("d1", "Ban the accounts that younger than", SelectOptions);
-
     string DropdownResult = Builders
                             .WaitDropdown("Age Limit", "🔹 Pick up an time to put account age limit into server.",
                                 SelectMenu, c)
                             .GetAwaiter().GetResult().Result.Values.First();
 
+    
     int BanDays = 0;
-
     switch ( DropdownResult )
     {
       case null:

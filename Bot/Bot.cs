@@ -12,7 +12,7 @@ public class Bot
   {
     _client = new DiscordClient(new DiscordConfiguration
     {
-        Token = "OTQ2MTMzNzU0NzY4OTIwNTc2.YhaRuQ.EYLvEWVgEPu_iVrsX2c8OkGx5q8",
+        Token = File.ReadAllText("..\\..\\..\\token.env"),
         TokenType = TokenType.Bot,
         Intents = DiscordIntents.GuildMembers | DiscordIntents.Guilds | DiscordIntents.GuildMessages,
         MinimumLogLevel = LogLevel.Information
