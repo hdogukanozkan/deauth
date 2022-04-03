@@ -24,6 +24,25 @@ public static class Builders
   }
 
   /// <summary>
+  ///   Waits the next message from user.
+  ///   null.
+  /// </summary>
+  public static async Task<DiscordMessage?> WaitMessage
+  (
+      InteractionContext c,
+      string Title,
+      string Desc,
+      int Timeout = 10)
+  {
+    await Edit(c, Title, Desc);
+
+    var r = await c.Client.GetInteractivity()
+                   .WaitForMessageAsync(x => x.Author == c.User, TimeSpan.FromSeconds(Timeout));
+
+    return r.TimedOut ? null : r.Result;
+  }
+
+  /// <summary>
   ///   Waits to user click to button with pre-has embed. Returns the ID of clicked button, or if timed out will return
   ///   null.
   /// </summary>
