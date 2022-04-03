@@ -232,8 +232,9 @@ public class GeneralCommands : ApplicationCommandModule
   [SlashCommand("logs", "Show the full list of verify logs.")]
   public async Task ShowLogs(InteractionContext c)
   {
-    await c.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource,
-        new DiscordInteractionResponseBuilder().AsEphemeral());
+    // await c.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource,
+    //     new DiscordInteractionResponseBuilder().AsEphemeral());
+    // Pagination interactivity response will auto create response already
 
     Config Guild = Utils.GetConfig(c.Guild);
     var Quarantineers = Guild.Attempts;
@@ -241,7 +242,6 @@ public class GeneralCommands : ApplicationCommandModule
     if (Quarantineers.Count == 0)
     {
       throw new DException("Nobody in there", "There are no users to filter. Request **verify** from your members!");
-      return;
     }
 
     StringBuilder sb = new();
