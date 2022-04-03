@@ -135,13 +135,13 @@ public static class Builders
   /// <summary>
   ///   Creates so basic embed without author header.
   /// </summary>
-  public static DiscordEmbed BasicEmbed(string Title, string Description, DiscordColor? Color = null)
+  public static DiscordEmbed BasicEmbed(string Title, string Description, DiscordColor? Color = null, string? Footer = null)
   {
     var eb = new DiscordEmbedBuilder
     {
         Title = Title,
         Description = Description,
-        Footer = new DiscordEmbedBuilder.EmbedFooter {Text = "DeAuth"},
+        Footer = new DiscordEmbedBuilder.EmbedFooter {Text = Footer ?? "DeAuth"},
         Color = Color ?? DiscordColor.Blue
     };
 

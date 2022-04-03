@@ -154,13 +154,23 @@ public class Bot
     // Check to member creation timestampt.
     if (cfg.AgeLimit != null)
     {
-      if (e.Member.CreationTimestamp.AddDays(0) < cfg.AgeLimit.Value)
+      if (e.Member.CreationTimestamp < cfg.AgeLimit.Value)
       {
-        await e.Member.BanAsync(reason: "Age Limit triggered.");
+        await e.Member.BanAsync(reason: "Account too young. [AGE LIMIT]");
         return;
       }
     }
-
+    
+    // check locale 
+    if (cfg.Locale != null)
+    {
+      if (!new CultureInfo(e.Member.Locale).EnglishName.Contains(cfg.Locale))
+      {
+        await e.Member.BanAsync(reason: $"Mismatching country. [CDIS]");
+        Utils.Log(e.Guild, e.Member, LogType.CDIS);
+      }
+    }
+    
     // Check suspicious accounts
     if (cfg.AntiRaid)
     {
@@ -171,7 +181,7 @@ public class Bot
       {
         if (TotalJoinDelay < 10)
         {
-          await e.Member.BanAsync(reason: "Suspicious account.");
+          await e.Member.BanAsync(reason: "Suspicious account. [ANTI RAID]");
           Utils.Log(e.Guild, e.Member, LogType.RaidDetected);
         }
         else
@@ -181,21 +191,13 @@ public class Bot
       }
     }
 
-    if (cfg.Locale != null)
-    {
-      if (!new CultureInfo(e.Member.Locale).EnglishName.Contains(cfg.Locale))
-      {
-        await e.Member.BanAsync(reason: $"User not joining from {cfg.Locale}");
-        Utils.Log(e.Guild, e.Member, LogType.CDIS);
-      }
-    }
-
     // Send welcome message
     if (cfg.WelcomeMessage != null)
     {
       try
       {
-        await e.Member.SendMessageAsync(cfg.WelcomeMessage);
+        var embedtosend = Builders.BasicEmbed(e.Guild.Name, cfg.WelcomeMessage, DiscordColor.PhthaloBlue, $"Sent from {e.Guild.Name}");
+        await e.Member.SendMessageAsync(embedtosend);
       }
       catch ( Exception )
       {
@@ -208,11 +210,11 @@ public class Bot
 
     if ((int) cfg.QuarantineType > 0)
     {
-      switch ( cfg.QuarantineType )
+      switch ( cfg )
       {
         // filter users
-        case QuarantineType.OnlyBots when !e.Member.IsBot:
-        case QuarantineType.OnlyUsers when e.Member.IsBot:
+        case {QuarantineType: QuarantineType.OnlyBots} when !e.Member.IsBot:
+        case {QuarantineType: QuarantineType.OnlyUsers} when e.Member.IsBot:
           return;
       }
     }
