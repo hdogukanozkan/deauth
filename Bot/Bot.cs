@@ -94,6 +94,18 @@ public class Bot
             e.Context,
             de.error_title, $"🔸 {de.error_desc}");
         break;
+      
+      case FatalException fe: // same as dexception, but only with code.
+        await Builders.Edit(
+            e.Context,
+            "Fatal Error", $"🔸 Something go wrong. Error Code: **{fe._errorCode}**");
+        break;
+      
+      case AbortException: // Tells process is aborted by user.
+        await Builders.Edit(
+            e.Context,
+            "Aborted", "🔸 Process is aborted by you or timed out.");
+        break;
 
       case SlashExecutionChecksFailedException slex:
       {
@@ -166,7 +178,7 @@ public class Bot
     {
       if (!new CultureInfo(e.Member.Locale).EnglishName.Contains(cfg.Locale))
       {
-        await e.Member.BanAsync(reason: $"Mismatching country. [CDIS]");
+        await e.Member.BanAsync(reason: "Mismatching country. [CDIS]");
         Utils.Log(e.Guild, e.Member, LogType.CDIS);
       }
     }

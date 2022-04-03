@@ -861,8 +861,18 @@ public static class Utils
   /// <returns></returns>
   public static string GetCountry(string TwoLetterISOCode)
   {
-    var Locale = new CultureInfo(TwoLetterISOCode);
-    string Country = CountryCodes[Locale.TwoLetterISOLanguageName.ToUpper()];
+    string Country;
+
+    try
+    {
+      var Locale = new CultureInfo(TwoLetterISOCode);
+      Country = CountryCodes[Locale.TwoLetterISOLanguageName.ToUpper()];
+    }
+    catch
+    {
+        throw new FatalException("L_NOT_FOUND");
+    }
+
     return Country;
   }
 

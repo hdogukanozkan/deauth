@@ -285,7 +285,6 @@ public class GeneralCommands : ApplicationCommandModule
     catch
     {
       throw new DException("Even searching the space", "Unable to find this user!");
-      return;
     }
 
     Config Config = Utils.GetConfig(c.Guild);

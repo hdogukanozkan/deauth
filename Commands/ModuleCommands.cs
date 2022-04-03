@@ -157,7 +157,7 @@ public class ModuleCommands : ApplicationCommandModule
     switch ( DropdownResult )
     {
       case null:
-        await Builders.Edit(c, "Aborted", "🔸 Aborted.");
+        throw new AbortException();
         break;
 
       // fill the ban days with the value

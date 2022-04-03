@@ -109,7 +109,7 @@ public class ConfigCommands : ApplicationCommandModule
               Name = c.Guild.Name,
               IconUrl = c.Guild?.IconUrl
           },
-          Color = DiscordColor.Magenta,
+          Color = DiscordColor.Lilac,
           Footer = new DiscordEmbedBuilder.EmbedFooter
           {
               Text = "DeAuth"
@@ -128,13 +128,13 @@ public class ConfigCommands : ApplicationCommandModule
           $"᲼᲼・Mode ⟩ **{cfg.CaptchaOptions.Mode}**\n");
 
       embed.AddField("🔸 Modules",
-          $"᲼᲼・Age Limit ⟩ **{(cfg.AgeLimit != null ? $"{cfg.AgeLimit.Value.ToLogicalString()}" : "False")}**\n" +
-          $"᲼᲼・Country Disallowing ⟩ **{(cfg.Locale != null ? $"{cfg.Locale}" : "False")}**\n" +
+          $"᲼᲼・Age Limit ⟩ **{cfg.AgeLimit?.ToLogicalString() ?? "False"}**\n" +
+          $"᲼᲼・Country Disallowing ⟩ **{cfg.Locale ?? "False"}**\n" +
           $"᲼᲼・Anti Raid ⟩ **{cfg.AntiRaid}**");
 
       if (errors.Length > 0)
       {
-        embed.AddField("Health", errors.ToString());
+        embed.AddField("Errors", errors.ToString());
       }
 
       await Builders.Edit(c, embed.Build());
@@ -195,7 +195,7 @@ public class ConfigCommands : ApplicationCommandModule
     await c.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource,
         new DiscordInteractionResponseBuilder().AsEphemeral());
 
-    string ENCRYPTED_CONFIG_KEY = null;
+    string? ENCRYPTED_CONFIG_KEY = null;
 
     try
     {
@@ -247,8 +247,7 @@ public class ConfigCommands : ApplicationCommandModule
 
     if (Import != "import")
     {
-      await Builders.Edit(c, "Aborted", "");
-      return;
+      throw new AbortException();
     }
 
     await Builders.Edit(c, "Clearing", "**⟩** Clearing the old verification data...");

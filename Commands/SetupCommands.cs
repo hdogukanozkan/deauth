@@ -43,14 +43,12 @@ public class SetupCommands : ApplicationCommandModule
 
     if (ButtonResult.Result == null)
     {
-      await Builders.Edit(c, "Timeout", "🔸 You was too late. But you can try again!");
-      return;
+      throw new AbortException();
     }
 
     if (ButtonResult.Result.Id == "verify_cancel")
     {
-      await Builders.Edit(c, "Canceled", "🔸 You canceled the setup.");
-      return;
+      throw new AbortException();
     }
 
     await Builders.Edit(c, "Creating", "**⟩** Creating panel components...");
@@ -93,16 +91,9 @@ public class SetupCommands : ApplicationCommandModule
     var ButtonResult = Interactivity.WaitForButtonAsync(await c.GetOriginalResponseAsync(), c.User)
                                     .GetAwaiter().GetResult();
 
-    if (ButtonResult.Result == null)
+    if (ButtonResult.Result.Id != "clear_continue")
     {
-      await Builders.Edit(c, "Timeout", "🔸 You was too late. But you can try again!");
-      return;
-    }
-
-    if (ButtonResult.Result.Id == "clear_cancel")
-    {
-      await Builders.Edit(c, "Canceled", "🔸 You canceled the clear process.");
-      return;
+      throw new AbortException();
     }
 
     await Builders.Edit(c, "Cleaning UP", "**⟩** Cleaning up verification components...");
