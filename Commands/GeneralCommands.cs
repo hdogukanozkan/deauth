@@ -36,6 +36,71 @@ public class GeneralCommands : ApplicationCommandModule
     await c.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(embed).AddComponents(components));
   }
 
+  #region Ban Commands
+
+  [SlashRequireUserPermissions(Permissions.Administrator)]
+  [SlashCommand("ban", "Ban a member.")]
+  public async Task Ban
+  (
+      InteractionContext c,
+      [Option("member", "User to ban.")] DiscordUser User,
+      [Option("reason", "Why you're banning them?")]
+      string? Reason = null,
+      [Option("delete", "Delete days of user messages.")]
+      double DelDays = 0)
+  {
+    await c.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource,
+        new DiscordInteractionResponseBuilder().AsEphemeral());
+
+    if (DelDays is < 1 or > 14)
+    {
+      await Builders.Edit(c, "Ban Days", "🔸 Ban days must be between **1-14**.");
+      return;
+    }
+    
+    try
+    {
+      await c.Guild.BanMemberAsync(await User.ToMember(c.Guild.Id), (int)DelDays, Reason ?? "No Reason");
+      await Builders.Edit(c, "DeAuth Airports", $"🔸 **{User.Mention}** has been banned. **Have a good flight!**\n" +
+                                       $"᲼᲼🔸 Reason: {Reason ?? "No Reason"}\n" +
+                                       $"᲼᲼🔸 Delete Days: {DelDays}");
+    }
+    catch
+    {
+      await Builders.Edit(c, "Failed", "🔸 Failed to ban member. The ID may wrong.");
+    }
+
+
+  }
+
+  [SlashRequireUserPermissions(Permissions.Administrator)]
+  [SlashCommand("unban", "UnBan a user.")]
+  public async Task UnBan
+  (
+      InteractionContext c,
+      [Option("id", "User ID to unban.")] SnowflakeObject ID,
+      [Option("reason", "Why you're unbanning them?")]
+      string? Reason = null)
+  {
+    
+    await c.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource,
+        new DiscordInteractionResponseBuilder().AsEphemeral());
+
+    try
+    {
+      await c.Guild.UnbanMemberAsync(ID.Id, Reason);
+      await Builders.Edit(c, "Unban", $"🔸 User {await c.Client.GetUserAsync(ID.Id)} has been unbanned.\n" +
+                                     $"᲼᲼🔸 Reason: {Reason ?? "No Reason"}");
+    }
+    catch
+    {
+      await Builders.Edit(c, "Uppps!", "🔸 Failed to unban user. Please Check the ID.");
+    }
+    
+  }
+
+  #endregion
+
   [SlashRequireUserPermissions(Permissions.Administrator)]
   [VerificationDependency("You cannot make cleanup without verification enabled.")]
   [SlashCommand("cleanup", "Prune your members from the server.")]
@@ -102,7 +167,7 @@ public class GeneralCommands : ApplicationCommandModule
 
   [SlashRequireUserPermissions(Permissions.Administrator)]
   [SlashCommand("manage", "Manage the logs and users.")]
-  public async Task ManageLogs(InteractionContext c)
+  public async Task Manage(InteractionContext c)
   {
     await c.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource,
         new DiscordInteractionResponseBuilder().AsEphemeral());
@@ -134,12 +199,12 @@ public class GeneralCommands : ApplicationCommandModule
     };
 
     string? ButtonResult = Builders.WaitButton(c, "Manage",
-                                       $"**⟩** Total Log **⮈** **{total}**\n" +
-                                       $"**⟩** Last Verify **⮈** <@{Quarantineers?.Last(x => x.Status == Status.Verified)?.UserID ?? 0}>\n" +
-                                       $"**⟩** Members **⮈** **{c.Guild.MemberCount}**\n" +
-                                       $"**⟩** `Verified` Users **⮈** **{total_verified}**\n" +
-                                       $"**⟩** `Unverified` Users **⮈** **{total_unverified}**\n" +
-                                       $"**⟩** `Kicked` Users **⮈** **{total_kicked}**\n",
+                                       $"・Total Log *⟩** **{total}**\n" +
+                                       $"・Last Verify *⟩** <@{Quarantineers?.Last(x => x.Status == Status.Verified)?.UserID ?? 0}>\n" +
+                                       $"・Members *⟩** **{c.Guild.MemberCount}**\n" +
+                                       $"・Verified Users *⟩** **{total_verified}**\n" +
+                                       $"・Unverified Users *⟩** **{total_unverified}**\n" +
+                                       $"・Kicked Users *⟩** **{total_kicked}**\n",
                                        10 * 60 * 1000,
                                        buttons)
                                    .GetAwaiter().GetResult();
