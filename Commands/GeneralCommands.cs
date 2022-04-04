@@ -117,7 +117,7 @@ public class GeneralCommands : ApplicationCommandModule
 
     var SelectMenu = new DiscordSelectComponent("d1", "Preset to apply.", SelectOptions);
 
-    string DropdownResult = Builders
+    string? DropdownResult = Builders
                             .WaitDropdown("Cleanup", "🔹 Select a option that will be executed on all members.",
                                 SelectMenu, c)
                             .GetAwaiter().GetResult().Result.Values.First();
