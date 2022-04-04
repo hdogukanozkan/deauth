@@ -6,6 +6,24 @@ public static class Extensions
   private static readonly DiscordClient? client = Bot.Bot._client;
 
   /// <summary>
+  ///   Converts discord user to member.
+  /// </summary>
+  /// <param name="User"></param>
+  /// <param name="GuildID"></param>
+  /// <returns></returns>
+  public static async Task<DiscordMember?> ToMember(this DiscordUser User, ulong GuildID)
+  {
+    try
+    {
+      return await client.GetGuildAsync(GuildID).Result.GetMemberAsync(User.Id);
+    }
+    catch
+    {
+      return null;
+    }
+  }
+
+  /// <summary>
   ///   Calculates the percentage of suspiciously of member.
   /// </summary>
   /// <param name="Member"></param>
