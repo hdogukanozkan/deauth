@@ -28,10 +28,11 @@ internal class ConfigManager : Encryption
   /// <param name="Config">Config to share with.</param>
   /// <param name="Sharer">The user id of sharer.</param>
   /// <returns>A encrypted AES256 json object.</returns>
-  public static string CreateTemplate(Config Config, ulong Sharer)
+  public static string CreateTemplate(Config Config, ulong Sharer, string Name)
   {
     var ShareData = new ConfigTemplate
     {
+        Name = Name,
         Config = Config,
         CreatedOn = DateTime.Now,
         UserID = Sharer

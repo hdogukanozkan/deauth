@@ -7,6 +7,7 @@ public class ConfigTemplate
 {
 
   public Config   Config    { get; set; }
+  public string   Name      { get; set; }
   public ulong    UserID    { get; set; }
   public DateTime CreatedOn { get; set; }
 

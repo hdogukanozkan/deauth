@@ -190,18 +190,34 @@ public class ConfigCommands : ApplicationCommandModule
 
   [VerificationDependency("・You must create a config first to share it.")]
   [SlashCommand("export", "Create a backup/template of your config.")]
-  public async Task Export(InteractionContext c, [Option("logs", "Determines logs should included in template also.")] bool logs = false)
+  public async Task Export(InteractionContext c, 
+                           [Option("name", "Name your config.")]
+                           string Name,
+                           [Option("logs", "Determines logs should included in template also.")]
+                           bool logs = false)
   {
     await c.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource,
         new DiscordInteractionResponseBuilder().AsEphemeral());
 
-    string? ENCRYPTED_CONFIG_KEY = null;
+    if (string.IsNullOrEmpty(Name))
+    {
+      await Builders.Edit(c, "Hmm?", "🔸 You must provide a name for your config.");
+      return;
+    }
+
+    if (Name is {Length: > 16 or <= 1}) // Hell,,,, this is best pattern in cs
+    {
+      await Builders.Edit(c, "You must put a name", "🔸 Config name must be between **1 - 16** characters.");
+      return;
+    }
+
+    string? ENCRYPTED_CONFIG_KEY;
 
     try
     {
       Config ca = Utils.GetConfig(c.Guild);                      // to prevent from resetting original config, create new instance
       ca.Attempts = logs ? ca.Attempts : new List<UserStatus>(); // remove logs if not requested
-      ENCRYPTED_CONFIG_KEY = ConfigManager.CreateTemplate(ca, c.User.Id);
+      ENCRYPTED_CONFIG_KEY = ConfigManager.CreateTemplate(ca, c.User.Id, Name);
     }
     catch
     {
@@ -239,7 +255,7 @@ public class ConfigCommands : ApplicationCommandModule
 
     string? Import = Builders.WaitButton(c,
         "Import Config",
-        "**⟩** Do you want import this config? the current config will be overwritten.\n\n" +
+        $"**⟩** Do you want import config `{scfg.Name}`? the current config will be overwritten.\n\n" +
         $"⠀🔹 From server **⟩** {SharerGuild} - {scfg.Config.GuildID}\n" +
         $"⠀🔹 Created by **⟩** {SharerUser}\n" +
         $"⠀🔹 Created on **⟩** {scfg.CreatedOn.ToLogicalString()} **ago**\n", 15,
