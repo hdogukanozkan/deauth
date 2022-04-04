@@ -42,14 +42,14 @@ internal class Bot : Serializers
 
     try
     {
-      Consts.Config = Serializers.DeSerialize();
+      Consts.Config = DeSerialize();
     }
     catch ( Exception e )
     {
       Consts.Config = new List<Config>();
     }
 
-    Serializers.BindAutoSave(TimeSpan.FromSeconds(20));
+    BindAutoSave(TimeSpan.FromSeconds(20));
   }
 
   /// <summary>
@@ -94,13 +94,13 @@ internal class Bot : Serializers
             e.Context,
             de.error_title, $"🔸 {de.error_desc}");
         break;
-      
+
       case FatalException fe: // same as dexception, but only with code.
         await Builders.Edit(
             e.Context,
             "Fatal Error", $"🔸 Something go wrong. Error Code: **{fe._errorCode}**");
         break;
-      
+
       case AbortException: // Tells process is aborted by user.
         await Builders.Edit(
             e.Context,
@@ -172,7 +172,7 @@ internal class Bot : Serializers
         return;
       }
     }
-    
+
     // check locale 
     if (cfg.Locale != null)
     {
@@ -182,7 +182,7 @@ internal class Bot : Serializers
         Utils.Log(e.Guild, e.Member, LogType.CDIS);
       }
     }
-    
+
     // Check suspicious accounts
     if (cfg.AntiRaid)
     {

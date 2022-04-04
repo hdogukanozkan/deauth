@@ -62,7 +62,7 @@ public class ModuleCommands : ApplicationCommandModule
         }
         else
         {
-          await Builders.Edit(c, "Country Disallowing", "🔸 Aborted.");
+          throw new AbortException();
         }
 
         break;

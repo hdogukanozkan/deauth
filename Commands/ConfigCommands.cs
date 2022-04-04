@@ -242,7 +242,7 @@ public class ConfigCommands : ApplicationCommandModule
         "**⟩** Do you want import this config? the current config will be overwritten.\n\n" +
         $"⠀🔹 From server **⟩** {SharerGuild} - {scfg.Config.GuildID}\n" +
         $"⠀🔹 Created by **⟩** {SharerUser}\n" +
-        $"⠀🔹 Created on **⟩** {scfg.CreatedOn.ToLogicalString()}\n", 15,
+        $"⠀🔹 Created on **⟩** {scfg.CreatedOn.ToLogicalString()} **ago**\n", 15,
         new[] {new DiscordButtonComponent(ButtonStyle.Secondary, "import", "Import")}).GetAwaiter().GetResult();
 
     if (Import != "import")
