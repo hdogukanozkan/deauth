@@ -35,35 +35,36 @@ public class ModuleCommands : ApplicationCommandModule
 
     if (c.Interaction?.Locale == null)
     {
-      throw new DException("Uhm?", "This command not available in this server. ");
+      throw new DException("Uhm?", "Failed to determine country of your account.");
     }
 
-    string Country = Utils.GetCountry(c.Interaction.Locale);
+    if (!Utils.TryGetCountry(c.Interaction.Locale, out string Country))
+    {
+      throw new DException("Uhm?", "Failed to determine country of your account.");
+    }
 
     switch ( Enabled )
     {
       case true:
       {
-        string? enable = Builders.WaitButton(c, "Country Disallowing", $"🔹 Server country has detected as `{Country}`. " +
-                                                                       "Do you want to block users that joining from other countries?\n\n" +
-                                                                       "・**Warning!** || This feature is currently on beta. Our country detection mechanism still improving, and it may not work in some cases. ||"
+        string? enable = Builders.WaitButton(c, "Country Disallowing", $"🔹 **DeAuth** detected country as `{Country}`. " +
+                                                                       $"Do you want to auto-ban new users that not joining from {Country}?\n\n" +
+                                                                       "・**Warning!** || This feature is currently on beta. Country detection mechanism still improving, and it may not work in some cases. Use at your own risk. ||"
             , 20, new[]
             {
                 new DiscordButtonComponent(ButtonStyle.Secondary, "disallow_country_true", "", false, new DiscordComponentEmoji("✅")),
                 new DiscordButtonComponent(ButtonStyle.Secondary, "disallow_country_false", "", false, new DiscordComponentEmoji("❌"))
             }).GetAwaiter().GetResult();
 
-        if (enable == "disallow_country_true")
-        {
-          cfg.Locale = Country;
-
-          await Builders.Edit(c, "Country Disallowing",
-              $"🔹 [Country Disallowing]({Consts.DOCUMENTATION_GITBOOK + "/more/modules/country-disallower"}) is enabled. **DeAuth** will ban the members that not joining from **{Country}**.");
-        }
-        else
+        if (enable != "disallow_country_true")
         {
           throw new AbortException();
         }
+
+        cfg.Locale = Country;
+
+        await Builders.Edit(c, "Country Disallowing",
+            $"🔹 [Country Disallowing]({Consts.DOCUMENTATION_GITBOOK + "/more/modules/country-disallower"}) is **enabled** for `{Country}`.");
 
         break;
       }
@@ -148,7 +149,7 @@ public class ModuleCommands : ApplicationCommandModule
     var SelectMenu = new DiscordSelectComponent("d1", "Ban the accounts that younger than", SelectOptions);
 
     string DropdownResult = Builders
-                            .WaitDropdown("Age Limit", "🔹 Pick up an time to put account age limit into server.",
+                            .WaitDropdown("Age Limit", "🔹 Pick up an time limit to put account age limit into server.",
                                 SelectMenu, c)
                             .GetAwaiter().GetResult().Result.Values.First();
 

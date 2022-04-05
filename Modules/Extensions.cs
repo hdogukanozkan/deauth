@@ -106,12 +106,12 @@ public static class Extensions
       return $"{span.Minutes} {(span.Minutes == 1 ? "Minute" : "Minutes")}";
     }
 
-    if (span.Seconds > 5)
+    if (span.Seconds > 3)
     {
       return $"{span.Seconds} Seconds";
     }
 
-    return span.Seconds <= 5 ? "Instantly" : string.Empty;
+    return span.Seconds <= 3 ? "Instantly" : string.Empty;
   }
 
   /// <summary>

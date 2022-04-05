@@ -777,8 +777,8 @@ public static class Utils
   /// </summary>
   public static void Log(DiscordGuild guild, DiscordMember member, LogType Type)
   {
-    string Title = "", Description = "";
-    DiscordColor color = DiscordColor.Gold;
+    string Title, Description = "";
+    DiscordColor color;
 
     Config Guild = GetConfig(guild);
     ulong channel = Guild.LogChannel;
@@ -857,23 +857,24 @@ public static class Utils
   /// <summary>
   ///   Gets country name with TwoLetterISOCode.
   /// </summary>
-  /// <param name="TwoLetterISOCode"></param>
+  /// <param name="TwoLetterISOCode">Two letter iso code of interaction locale.</param>
+  /// <param name="CountryName">Name of country.</param>
   /// <returns></returns>
-  public static string GetCountry(string TwoLetterISOCode)
+  public static bool TryGetCountry(string TwoLetterISOCode, out string CountryName)
   {
-    string Country;
-
+      
     try
     {
       var Locale = new CultureInfo(TwoLetterISOCode);
-      Country = CountryCodes[Locale.TwoLetterISOLanguageName.ToUpper()];
+      CountryName = CountryCodes[Locale.TwoLetterISOLanguageName.ToUpper()];
+      return true;
     }
     catch
     {
-        throw new FatalException("L_NOT_FOUND");
+        CountryName = null;
+        return false;
     }
-
-    return Country;
+    
   }
 
   #region Panel-Verification Utils

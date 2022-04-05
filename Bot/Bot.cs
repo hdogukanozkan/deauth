@@ -94,13 +94,7 @@ internal class Bot : Serializers
             e.Context,
             de.error_title, $"🔸 {de.error_desc}");
         break;
-
-      case FatalException fe: // same as dexception, but only with code.
-        await Builders.Edit(
-            e.Context,
-            "Fatal Error", $"🔸 Something go wrong. Error Code: **{fe._errorCode}**");
-        break;
-
+      
       case AbortException: // Tells process is aborted by user.
         await Builders.Edit(
             e.Context,
@@ -268,19 +262,24 @@ internal class Bot : Serializers
 
         #region Check locale for country disallowing module
 
-        if (cfg.Locale != null && e.Interaction?.Locale != null)
+        if (cfg.Locale != null) // cdis enabled
         {
-          if (Utils.GetCountry(e.Interaction?.Locale) != cfg.Locale)
+          
+          if (Utils.TryGetCountry(e.Interaction?.Locale, out string Country)) // check if country gettable
           {
-            string Country = Utils.GetCountry(e.Interaction.Locale);
-            DiscordMember member = await e.Guild.GetMemberAsync(e.User.Id);
-
+            if (Country == cfg.Locale) return;
+            var member = await e.User.ToMember(e.Guild.Id);
+            await member.BanAsync(reason: "Mismatching country. [CDIS]");
+            Utils.Log(e.Guild, member, LogType.CDIS);
+          }
+          else // cannot retrieve country
+          {
+            
             await e.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder()
                                                                                                       .AddEmbed(
                                                                                                           Builders.BasicEmbed("Locked",
-                                                                                                              $"🔸 Sorry but this server not accepts users that are from **{Country}**."))
+                                                                                                              $"🔸 Sorry but we're not able to detect your country. This server is protecting with **DeAuth CDIS**. Please comeback later. **{Country}**."))
                                                                                                       .AsEphemeral());
-            Utils.Log(e.Guild, member, LogType.CDIS);
             return;
           }
         }
@@ -320,7 +319,7 @@ internal class Bot : Serializers
         DiscordInteractionResponseBuilder? Modal = new DiscordInteractionResponseBuilder()
                                                    .WithCustomId(cfg.GuildID.ToString())
                                                    .WithTitle("Verify")
-                                                   .WithContent("🔸 Pass the verification to get access")
+                                                   .WithContent("🔸 Pass the verification to get access.")
                                                    .AddComponents(new TextInputComponent(
                                                        $"{Captcha}",
                                                        Captcha,
