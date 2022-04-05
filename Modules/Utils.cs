@@ -862,7 +862,6 @@ public static class Utils
   /// <returns></returns>
   public static bool TryGetCountry(string TwoLetterISOCode, out string CountryName)
   {
-      
     try
     {
       var Locale = new CultureInfo(TwoLetterISOCode);
@@ -871,10 +870,9 @@ public static class Utils
     }
     catch
     {
-        CountryName = null;
-        return false;
+      CountryName = null;
+      return false;
     }
-    
   }
 
   #region Panel-Verification Utils

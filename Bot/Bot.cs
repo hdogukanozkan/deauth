@@ -94,7 +94,7 @@ internal class Bot : Serializers
             e.Context,
             de.error_title, $"🔸 {de.error_desc}");
         break;
-      
+
       case AbortException: // Tells process is aborted by user.
         await Builders.Edit(
             e.Context,
@@ -202,7 +202,7 @@ internal class Bot : Serializers
     {
       try
       {
-        var embedtosend = Builders.BasicEmbed(e.Guild.Name, cfg.WelcomeMessage, DiscordColor.PhthaloBlue, $"Sent from {e.Guild.Name}");
+        DiscordEmbed embedtosend = Builders.BasicEmbed(e.Guild.Name, cfg.WelcomeMessage, DiscordColor.PhthaloBlue, $"Sent from {e.Guild.Name}");
         await e.Member.SendMessageAsync(embedtosend);
       }
       catch ( Exception )
@@ -264,17 +264,15 @@ internal class Bot : Serializers
 
         if (cfg.Locale != null) // cdis enabled
         {
-          
           if (Utils.TryGetCountry(e.Interaction?.Locale, out string Country)) // check if country gettable
           {
             if (Country == cfg.Locale) return;
-            var member = await e.User.ToMember(e.Guild.Id);
+            DiscordMember? member = await e.User.ToMember(e.Guild.Id);
             await member.BanAsync(reason: "Mismatching country. [CDIS]");
             Utils.Log(e.Guild, member, LogType.CDIS);
           }
           else // cannot retrieve country
           {
-            
             await e.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder()
                                                                                                       .AddEmbed(
                                                                                                           Builders.BasicEmbed("Locked",
@@ -375,7 +373,7 @@ internal class Bot : Serializers
                       "Verify",
                       "**⟩** Captcha was incorrect, please try again.\n",
                       DiscordColor.Red,
-                      Footer: "DeAuth Verification")));
+                      "DeAuth Verification")));
 
       switch ( Config.CaptchaOptions.OnVerifyFail )
       {

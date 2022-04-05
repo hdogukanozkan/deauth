@@ -190,11 +190,12 @@ public class ConfigCommands : ApplicationCommandModule
 
   [VerificationDependency("・You must create a config first to share it.")]
   [SlashCommand("export", "Create a backup/template of your config.")]
-  public async Task Export(InteractionContext c, 
-                           [Option("name", "Name your config.")]
-                           string Name,
-                           [Option("logs", "Determines logs should included in template also.")]
-                           bool logs = false)
+  public async Task Export
+  (
+      InteractionContext c,
+      [Option("name", "Name your config.")] string Name,
+      [Option("logs", "Determines logs should included in template also.")]
+      bool logs = false)
   {
     await c.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource,
         new DiscordInteractionResponseBuilder().AsEphemeral());

@@ -1,6 +1,6 @@
 ﻿namespace DeAuth.Bot;
 
-class Serializers
+internal class Serializers
 {
 
   /// <summary>
