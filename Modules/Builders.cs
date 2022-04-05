@@ -94,7 +94,6 @@ public static class Builders
       string Title,
       string Description,
       DiscordColor? Color = null,
-      string? alternativeUrl = null,
       string Footer = "DeAuth")
   {
     var eb = new DiscordEmbedBuilder

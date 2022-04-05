@@ -190,23 +190,19 @@ public static class Extensions
     #region Delete Overrides
 
     DiscordGuild guild = client.GetGuildAsync(opt.GuildID).Result;
-    DiscordRole? ReturnRole = null;
 
     (_, DiscordRole? value) = guild.Roles.FirstOrDefault(x => x.Value.Name == Consts.QUARANTINE_ROLE_NAME);
 
-    ReturnRole =
-        value?.Name is null
-            ? Create // If create is selected, create new role. Otherwise, return null.
-                ? guild.CreateRoleAsync(Consts.QUARANTINE_ROLE_NAME, Consts.QuarantineRolePerm, DiscordColor.DarkRed).Result
-                : value
-            : value;
+    DiscordRole? ReturnRole = value?.Name is null
+        ? Create // If create is selected, create new role. Otherwise, return null.
+            ? guild.CreateRoleAsync(Consts.QUARANTINE_ROLE_NAME, Consts.QuarantineRolePerm, DiscordColor.DarkRed).Result
+            : value
+        : value;
 
     opt.RoleID = ReturnRole?.Id ?? 0;
     return ReturnRole;
 
     #endregion
-
-    return ReturnRole;
   }
 
   /// <summary>
@@ -257,8 +253,7 @@ public static class Extensions
                 Builders.BuildEmbed(e.User,
                     "Verify",
                     $"**⟩** You are successfully verified in **{e.Guild.Name}**. Now you can access to channels.",
-                    DiscordColor.Purple,
-                    Footer: "DeAuth")));
+                    DiscordColor.Purple)));
 
     // await e.Guild.GetMemberAsync(e.User.Id).Result.ReplaceRolesAsync(new[] {e.Guild.EveryoneRole});
     await e.Guild.GetMemberAsync(e.User.Id).Result.RevokeRoleAsync(Utils.GetConfig(e.Guild).GetQuarantineRole());

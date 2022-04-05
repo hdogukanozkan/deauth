@@ -363,11 +363,7 @@ internal class Bot : Serializers
     string CaptchaCode = e.Interaction.Data.Components[0].Components.First().CustomId;
     string UserResponse = Values.First();
 
-    if (string.Equals(CaptchaCode, UserResponse, StringComparison.OrdinalIgnoreCase))
-    {
-      await Config.Verify(e.Interaction);
-    }
-    else // CaptchaOptions failed
+    if (!string.Equals(CaptchaCode, UserResponse, StringComparison.OrdinalIgnoreCase))
     {
       DiscordMember? Member = await Guild.GetMemberAsync(e.Interaction.User.Id);
 
@@ -384,13 +380,13 @@ internal class Bot : Serializers
       switch ( Config.CaptchaOptions.OnVerifyFail )
       {
         case VerifyFail.Ban:
-          await Member.BanAsync(0, "Banned because of failed captcha.");
+          await Member.BanAsync(0, "Verify failed. [VERIFY_FAIL_ACTION]");
           Config.EditStatus(e.Interaction.User.Id, Status.Kicked);
           Utils.Log(e.Interaction.Guild, await e.Interaction.Guild.GetMemberAsync(e.Interaction.User.Id), LogType.VFail);
           break;
 
         case VerifyFail.Kick:
-          await Member.RemoveAsync("Kicked because of failed captcha.");
+          await Member.RemoveAsync("Verify failed. [VERIFY_FAIL_ACTION]");
           Config.EditStatus(e.Interaction.User.Id, Status.Kicked);
           Utils.Log(e.Interaction.Guild, await e.Interaction.Guild.GetMemberAsync(e.Interaction.User.Id), LogType.VFail);
           break;
@@ -399,6 +395,10 @@ internal class Bot : Serializers
           Config.EditStatus(e.Interaction.User.Id, Status.UnVerified);
           break;
       }
+    }
+    else
+    {
+      await Config.Verify(e.Interaction);
     }
 
     #endregion

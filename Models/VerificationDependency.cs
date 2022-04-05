@@ -6,7 +6,7 @@
 public class VerificationDependency : SlashCheckBaseAttribute
 {
 
-  public string _errormessage;
+  public readonly string _errormessage;
 
   public VerificationDependency
   (

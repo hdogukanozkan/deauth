@@ -21,7 +21,7 @@ class Serializers
   /// <summary>
   ///   Serializes an object to an XML file
   /// </summary>
-  protected static void Serialize(string FilePath = "Config.xml")
+  private static void Serialize(string FilePath = "Config.xml")
   {
     try
     {
@@ -47,7 +47,7 @@ class Serializers
   /// <summary>
   ///   Creates a thread for autoSaveModule for config.
   /// </summary>
-  public static void BindAutoSave(TimeSpan Interval)
+  protected static void BindAutoSave(TimeSpan Interval)
   {
     timer = new Timer(Interval.TotalMilliseconds);
     timer.AutoReset = true;
