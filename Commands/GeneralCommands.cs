@@ -358,7 +358,7 @@ public class GeneralCommands : ApplicationCommandModule
     {
       await c.Guild.UnbanMemberAsync(ID.Id, Reason);
 
-      await Builders.Edit(c, "Unban", $"🔸 User {await c.Client.GetUserAsync(ID.Id)} has been unbanned.\n" +
+      await Builders.Edit(c, "Unban", $"🔸 **{c.Client.GetUserAsync(ID.Id).Result.Username}** has been unbanned.\n" +
                                       $"᲼᲼🔸 Reason: {Reason ?? "No Reason"}");
     }
     catch

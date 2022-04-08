@@ -47,7 +47,7 @@ public class ModuleCommands : ApplicationCommandModule
     {
       case true:
       {
-        string? enable = Builders.WaitButton(c, "Country Disallowing", $"🔹 **DeAuth** detected country as `{Country}`. " +
+        string? enable = Builders.WaitButton(c, "Country Disallowing // BETA", $"🔹 **DeAuth** detected country as `{Country}`. " +
                                                                        $"Do you want to auto-ban new users that not joining from {Country}?\n\n" +
                                                                        "・**Warning!** || This feature is currently on beta. Country detection mechanism still improving, and it may not work in some cases. Use at your own risk. ||"
             , 20, new[]

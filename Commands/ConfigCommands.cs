@@ -130,7 +130,8 @@ public class ConfigCommands : ApplicationCommandModule
       embed.AddField("🔸 Modules",
           $"᲼᲼・Age Limit ⟩ **{cfg.AgeLimit?.ToLogicalString() ?? "False"}**\n" +
           $"᲼᲼・Country Disallowing ⟩ **{cfg.Locale ?? "False"}**\n" +
-          $"᲼᲼・Anti Raid ⟩ **{cfg.AntiRaid}**");
+          $"᲼᲼・Anti Raid ⟩ **{cfg.AntiRaid}**\n" +
+          $"᲼᲼・Lockdown ⟩ **{cfg.Locked}**\n");
 
       if (errors.Length > 0)
       {
@@ -256,7 +257,7 @@ public class ConfigCommands : ApplicationCommandModule
 
     string? Import = Builders.WaitButton(c,
         "Import Config",
-        $"**⟩** Do you want import config `{scfg.Name}`? the current config will be overwritten.\n\n" +
+        $"**⟩** Would you like to import `{scfg.Name}`. Current config will be overwritten.\n\n" +
         $"⠀🔹 From server **⟩** {SharerGuild} - {scfg.Config.GuildID}\n" +
         $"⠀🔹 Created by **⟩** {SharerUser}\n" +
         $"⠀🔹 Created on **⟩** {scfg.CreatedOn.ToLogicalString()} **ago**\n", 15,
