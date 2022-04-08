@@ -30,25 +30,32 @@ public static class Extensions
   /// <returns></returns>
   public static bool CalculateSuspiciously(this DiscordMember Member)
   {
-    var SusCount = 0;
+    
+    int SusCount = 0;
     DiscordUser AsUser = Member;
+    
+    // No connected accounts
 
-    if (AsUser.IsBot || AsUser?.IsSystem == true)
+
+    // check if this member is fake or alt account
+    
+
+    if (AsUser is {IsBot: true} or {IsSystem: true})
     {
       return false;
     }
 
-    if (Member?.AvatarUrl == null) // The avatar url is null
+    if (Member?.AvatarUrl == null || string.IsNullOrEmpty(Member?.GetAvatarUrl(ImageFormat.Auto))) // The avatar url is null
     {
       SusCount += 25;
     }
 
-    if (AsUser != null && AsUser.Presence.Status == DSharpPlus.Entities.UserStatus.Online) // New accounts is created with online status.
+    if (AsUser.Presence.Status == DSharpPlus.Entities.UserStatus.Online) // New accounts is created with online status.
     {
       SusCount += 25;
     }
 
-    if (AsUser != null && AsUser.Flags == UserFlags.None) // New accs cannot has flags.
+    if (AsUser.Flags == UserFlags.None) // New accs cannot has flags.
     {
       SusCount += 25;
     }
@@ -252,8 +259,8 @@ public static class Extensions
             .AddEmbed(
                 Builders.BuildEmbed(e.User,
                     "Verify",
-                    $"**⟩** You are successfully verified in **{e.Guild.Name}**. Now you can access to channels.",
-                    DiscordColor.Purple)));
+                    $"🔹 You are verified in **{e.Guild.Name}**.",
+                    DiscordColor.NotQuiteBlack)));
 
     // await e.Guild.GetMemberAsync(e.User.Id).Result.ReplaceRolesAsync(new[] {e.Guild.EveryoneRole});
     await e.Guild.GetMemberAsync(e.User.Id).Result.RevokeRoleAsync(Utils.GetConfig(e.Guild).GetQuarantineRole());

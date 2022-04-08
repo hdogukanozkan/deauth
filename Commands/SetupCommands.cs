@@ -2,10 +2,10 @@
 
 [SlashRequirePermissions(Permissions.Administrator)] // check for the bot also
 [SlashCommandGroup("setup", "Setup verification.")]
-public class SetupCommands : ApplicationCommandModule
+internal class SetupCommands : ApplicationCommandModule
 {
 
-  [SlashCommand("create", "Creates a new verification panel to new channel.")]
+  [SlashCommand("create", "Creates a new verification panel and enables on server.")]
   public static async Task Create
   (
       InteractionContext c,
@@ -68,7 +68,7 @@ public class SetupCommands : ApplicationCommandModule
   }
 
   [VerificationDependency("・Verification not enabled already.\n")]
-  [SlashCommand("remove", "Removes verification from server.")]
+  [SlashCommand("remove", "Removes and disables verification in server.")]
   public static async Task Remove(InteractionContext c)
   {
     await c.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource,

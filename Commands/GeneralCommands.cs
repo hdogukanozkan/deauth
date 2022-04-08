@@ -265,7 +265,7 @@ public class GeneralCommands : ApplicationCommandModule
     await interactivity.SendPaginatedResponseAsync(c.Interaction, true, c.User, Pages);
   }
 
-  [SlashRequirePermissions(Permissions.Administrator)]
+  [SlashRequireUserPermissions(Permissions.Administrator)]
   [SlashCommand("whois", "Show the information of user.")]
   public async Task Whois
   (

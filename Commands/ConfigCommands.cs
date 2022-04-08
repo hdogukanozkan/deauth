@@ -208,7 +208,7 @@ public class ConfigCommands : ApplicationCommandModule
 
     if (Name is {Length: > 16 or <= 1}) // Hell,,,, this is best pattern in cs
     {
-      await Builders.Edit(c, "You must put a name", "🔸 Config name must be between **1 - 16** characters.");
+      await Builders.Edit(c, "Too short... or long", "🔸 Config name must be between **1 - 16** characters.");
       return;
     }
 

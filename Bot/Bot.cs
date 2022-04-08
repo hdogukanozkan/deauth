@@ -244,6 +244,12 @@ internal class Bot : Serializers
       }
     }
 
+    if (cfg.Locked)
+    {
+      return;
+    }
+
+
     #endregion
 
     Utils.Log(e.Guild, e.Member, LogType.Join);
@@ -259,6 +265,20 @@ internal class Bot : Serializers
       case Consts.VERIFY_COMPONENT_ID:
       {
         Config cfg = Utils.GetConfig(e.Guild);
+        
+        #region Check lock
+
+        if (cfg.Locked)
+        {
+          await e.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder()
+                                                                                                    .AddEmbed(
+                                                                                                        Builders.BasicEmbed("Locked 🔒",
+                                                                                                            "🔸 This server is currenty locked to new members. Try again later."))
+                                                                                                    .AsEphemeral());
+          return;
+        }
+        
+        #endregion
 
         #region Check locale for country disallowing module
 
@@ -352,26 +372,24 @@ internal class Bot : Serializers
   /// </summary>
   private static async Task CaptchaHandler(DiscordClient sender, ModalSubmitEventArgs e)
   {
-    List<string> Values = e.Values.Values.ToList();
-
     #region Verify User
 
     DiscordGuild? Guild = e.Interaction.Guild;
     Config Config = Utils.GetConfig(Guild);
     string CaptchaCode = e.Interaction.Data.Components[0].Components.First().CustomId;
-    string UserResponse = Values.First();
+    string UserResponse = e.Values.Values.First();
 
     if (!string.Equals(CaptchaCode, UserResponse, StringComparison.OrdinalIgnoreCase))
     {
       DiscordMember? Member = await Guild.GetMemberAsync(e.Interaction.User.Id);
-
+      
       await e.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource,
           new DiscordInteractionResponseBuilder()
               .AsEphemeral()
               .AddEmbed(
                   Builders.BuildEmbed(e.Interaction.User,
                       "Verify",
-                      "**⟩** Captcha was incorrect, please try again.\n",
+                      "🔸 The captcha code was incorrect. Please try again.",
                       DiscordColor.Red,
                       "DeAuth Verification")));
 

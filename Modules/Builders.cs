@@ -148,16 +148,17 @@ public static class Builders
     return eb.Build();
   }
 
+  static char[] _alp = "QWERTYUOPLKJHGFDSAZXCVBNM1234567890".ToCharArray();
+  static char[] _sym = "!@#$%^&*()_+{}[]|:;<>?,./".ToCharArray();
   public static string GenerateCaptcha(CaptchaMode Mode, int Length)
   {
     // Mode 1 = Numbers | Letters only
-    char[] main = "QWERTYUOPLKJHGFDSAZXCVBNM1234567890".ToCharArray();
+    char[] main = _alp;
 
     // Mode 2 = Numbers | Letters | Symbols
     if ((int) Mode > 0)
     {
-      char[] symbols = "!@#$%^&*()_+{}[]|:;<>?,./".ToCharArray();
-      main = main.Concat(symbols).ToArray();
+      main = main.Concat(_sym).ToArray();
     }
 
     #region Randomize array of chars

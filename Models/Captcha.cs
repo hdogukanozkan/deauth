@@ -18,11 +18,12 @@ public enum CaptchaMode
 {
 
   [ChoiceName("Classic | Numbers & Letters")]
-  Classic,
-  [ChoiceName("Hard | With Symbols")] Hard,
+  Classic = 0,
+  [ChoiceName("Hard | With Symbols")]
+  Hard = 1,
 
   [ChoiceName("No Captcha | Verify With Button")]
-  NoCaptcha
+  NoCaptcha = 2
 
 }
 
