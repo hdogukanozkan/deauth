@@ -6,7 +6,7 @@
 public class ModuleCommands : ApplicationCommandModule
 {
 
-  [SlashCommand("antiraid", "Block the raids on your server.")]
+  [SlashCommand("antiraid", "Protect your server from raids.")]
   public async Task AntiRaid(InteractionContext c, [Option("on", "Whether anti-raid is enabled or not.")] bool Enabled)
   {
     await c.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource,
@@ -25,7 +25,7 @@ public class ModuleCommands : ApplicationCommandModule
     }
   }
 
-  [SlashCommand("cdis", "Auto ban the users that not from your country.")]
+  [SlashCommand("cdis", "Disallow the joining of users based on country.")]
   public async Task CountryDisallower(InteractionContext c, [Option("on", "Whether country-disallower is enabled or not.")] bool Enabled)
   {
     await c.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource,
@@ -123,7 +123,7 @@ public class ModuleCommands : ApplicationCommandModule
     SelectOptions.Add(new DiscordSelectComponentOption
     (
         "1 Month",
-        description: "Good for most server.",
+        description: "Recommended for most server.",
         value: "agelimit_1m",
         emoji: new DiscordComponentEmoji("☄")
     ));
@@ -131,7 +131,7 @@ public class ModuleCommands : ApplicationCommandModule
     SelectOptions.Add(new DiscordSelectComponentOption
         (
             "3 Month",
-            description: "Heavily protected server.",
+            description: "Heavily protect the server.",
             value: "agelimit_3m",
             emoji: new DiscordComponentEmoji("➖"))
     );
@@ -209,4 +209,31 @@ public class ModuleCommands : ApplicationCommandModule
     await Builders.Edit(c, "Limited OUT", $"🔹 Age limit is **enabled**. **DeAuth** will ban the new members that younger than **{when.ToLogicalString()}**.");
   }
 
+  [SlashCommand("lock", "Enable/Disable joinings. Useful to lock your server fully to outside")]
+  public async Task Lock(InteractionContext c, [Option("on", "Whather your server is locked.")] bool Enabled)
+  {
+    await c.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource,
+        new DiscordInteractionResponseBuilder().AsEphemeral());
+
+    Config cfg = Utils.GetConfig(c.Guild);
+
+    if (Enabled)
+    {
+      await Builders.Edit(c, "Locked", "🔸 Your server is locked to outside. Verifications are closed, no new members can verify itself.");
+      cfg.Locked = true;
+      return;
+    }
+
+    // if already false
+    if (!cfg.Locked)
+    {
+      await Builders.Edit(c, "Ahh...", "🔸 Your server already not using this module.");
+      return;
+    }
+    
+    await Builders.Edit(c, "Unlocked", "🔹 Lock removed. New members can verify themselves.");
+    cfg.Locked = false;
+
+  }
+  
 }
