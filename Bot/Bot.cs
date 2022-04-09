@@ -1,4 +1,7 @@
-﻿namespace DeAuth.Bot;
+﻿using System.Drawing;
+
+
+namespace DeAuth.Bot;
 
 internal class Bot : Serializers
 {
@@ -244,11 +247,18 @@ internal class Bot : Serializers
       }
     }
 
-    if (cfg.Locked)
+    switch ( cfg.LockMode )
     {
-      return;
-    }
+      case LockMode.Kick:
+        Utils.Log(e.Guild, e.Member, LogType.Locked);
+        await e.Member.RemoveAsync("Server is locked.");
+        return;
 
+      case LockMode.Ban:
+        Utils.Log(e.Guild, e.Member, LogType.Locked);
+        await e.Member.BanAsync(0,"Server is locked.");
+        return;
+    }
 
     #endregion
 
@@ -265,19 +275,20 @@ internal class Bot : Serializers
       case Consts.VERIFY_COMPONENT_ID:
       {
         Config cfg = Utils.GetConfig(e.Guild);
-        
+
         #region Check lock
 
-        if (cfg.Locked)
+        if (cfg.LockMode == LockMode.ShowMessage)
         {
           await e.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder()
                                                                                                     .AddEmbed(
                                                                                                         Builders.BasicEmbed("Locked 🔒",
-                                                                                                            "🔸 This server is currenty locked to new members. Try again later."))
+                                                                                                            "🔸 This server is currenty locked to new members. Try again later.",
+                                                                                                            DiscordColor.MidnightBlue))
                                                                                                     .AsEphemeral());
           return;
         }
-        
+
         #endregion
 
         #region Check locale for country disallowing module
@@ -382,7 +393,7 @@ internal class Bot : Serializers
     if (!string.Equals(CaptchaCode, UserResponse, StringComparison.OrdinalIgnoreCase))
     {
       DiscordMember? Member = await Guild.GetMemberAsync(e.Interaction.User.Id);
-      
+
       await e.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource,
           new DiscordInteractionResponseBuilder()
               .AsEphemeral()

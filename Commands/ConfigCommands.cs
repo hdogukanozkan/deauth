@@ -131,7 +131,7 @@ public class ConfigCommands : ApplicationCommandModule
           $"᲼᲼・Age Limit ⟩ **{cfg.AgeLimit?.ToLogicalString() ?? "False"}**\n" +
           $"᲼᲼・Country Disallowing ⟩ **{cfg.Locale ?? "False"}**\n" +
           $"᲼᲼・Anti Raid ⟩ **{cfg.AntiRaid}**\n" +
-          $"᲼᲼・Lockdown ⟩ **{cfg.Locked}**\n");
+          $"᲼᲼・Lockdown ⟩ **{(cfg.LockMode == null ? "False" : cfg.LockMode)}**\n");
 
       if (errors.Length > 0)
       {

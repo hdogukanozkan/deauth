@@ -9,6 +9,7 @@ public enum LogType
   BotJoined,    // bot joined
   RaidDetected, // raid detected
   CDIS,         // country-disallowing module triggered
-  AgeLimit      // age limit 
+  AgeLimit,     // age limit 
+  Locked,       // server is locked.
 
 }

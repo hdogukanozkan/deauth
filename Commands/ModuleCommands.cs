@@ -48,8 +48,8 @@ public class ModuleCommands : ApplicationCommandModule
       case true:
       {
         string? enable = Builders.WaitButton(c, "Country Disallowing // BETA", $"🔹 **DeAuth** detected country as `{Country}`. " +
-                                                                       $"Do you want to auto-ban new users that not joining from {Country}?\n\n" +
-                                                                       "・**Warning!** || This feature is currently on beta. Country detection mechanism still improving, and it may not work in some cases. Use at your own risk. ||"
+                                                                               $"Do you want to auto-ban new users that not joining from {Country}?\n\n" +
+                                                                               "・**Warning!** || This feature is currently on beta. Country detection mechanism still improving, and it may not work in some cases. Use at your own risk. ||"
             , 20, new[]
             {
                 new DiscordButtonComponent(ButtonStyle.Secondary, "disallow_country_true", "", false, new DiscordComponentEmoji("✅")),
@@ -210,7 +210,12 @@ public class ModuleCommands : ApplicationCommandModule
   }
 
   [SlashCommand("lock", "Enable/Disable joinings. Useful to lock your server fully to outside")]
-  public async Task Lock(InteractionContext c, [Option("on", "Whather your server is locked.")] bool Enabled)
+  public async Task Lock
+  (
+      InteractionContext c,
+      [Option("on", "Whather your server is locked.")]
+      bool Enabled,
+      [Option("mode", "Mode of locking.")] LockMode Mode)
   {
     await c.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource,
         new DiscordInteractionResponseBuilder().AsEphemeral());
@@ -219,21 +224,20 @@ public class ModuleCommands : ApplicationCommandModule
 
     if (Enabled)
     {
-      await Builders.Edit(c, "Locked", "🔸 Your server is locked to outside. Verifications are closed, no new members can verify itself.");
-      cfg.Locked = true;
+      await Builders.Edit(c, "Locked", $"🔸 Your server is locked to outside. Current lock mode: `{Mode.ToString()}`");
+      cfg.LockMode = Mode;
       return;
     }
 
     // if already false
-    if (!cfg.Locked)
+    if (cfg.LockMode == null)
     {
       await Builders.Edit(c, "Ahh...", "🔸 Your server already not using this module.");
       return;
     }
-    
-    await Builders.Edit(c, "Unlocked", "🔹 Lock removed. New members can verify themselves.");
-    cfg.Locked = false;
 
+    await Builders.Edit(c, "Unlocked", "🔹 Lock removed.");
+    cfg.LockMode = null;
   }
-  
+
 }

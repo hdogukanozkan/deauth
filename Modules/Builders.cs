@@ -148,8 +148,9 @@ public static class Builders
     return eb.Build();
   }
 
-  static char[] _alp = "QWERTYUOPLKJHGFDSAZXCVBNM1234567890".ToCharArray();
-  static char[] _sym = "!@#$%^&*()_+{}[]|:;<>?,./".ToCharArray();
+  private static readonly char[] _alp = "QWERTYUOPLKJHGFDSAZXCVBNM1234567890".ToCharArray();
+  private static readonly char[] _sym = "!@#$%^&*()_+{}[]|:;<>?,./".ToCharArray();
+
   public static string GenerateCaptcha(CaptchaMode Mode, int Length)
   {
     // Mode 1 = Numbers | Letters only

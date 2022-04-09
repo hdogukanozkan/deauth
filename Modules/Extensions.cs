@@ -30,15 +30,12 @@ public static class Extensions
   /// <returns></returns>
   public static bool CalculateSuspiciously(this DiscordMember Member)
   {
-    
-    int SusCount = 0;
+    var SusCount = 0;
     DiscordUser AsUser = Member;
-    
+
     // No connected accounts
 
-
     // check if this member is fake or alt account
-    
 
     if (AsUser is {IsBot: true} or {IsSystem: true})
     {
