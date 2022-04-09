@@ -194,8 +194,8 @@ public class ConfigCommands : ApplicationCommandModule
   public async Task Export
   (
       InteractionContext c,
-      [Option("name", "Name your config.")] string Name,
-      [Option("logs", "Determines logs should included in template also.")]
+      [Option("name", "Nameof config.")] string Name,
+      [Option("logs", "Whather logs should included in template also.")]
       bool logs = false)
   {
     await c.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource,
