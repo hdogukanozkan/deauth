@@ -97,6 +97,7 @@ public class ModuleCommands : ApplicationCommandModule
     if (!Enabled)
     {
       await Builders.Edit(c, "Age Limit", "🔸 Age limit is removed.");
+      cfg.AgeLimit = null;
       return;
     }
 
