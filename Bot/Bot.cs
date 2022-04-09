@@ -142,7 +142,7 @@ internal class Bot : Serializers
   /// </summary>
   private static async Task ClientOnReady(DiscordClient client, ReadyEventArgs e)
   {
-    await client.UpdateStatusAsync(new DiscordActivity($"/help | {Consts.PAGE}", ActivityType.Playing));
+    await client.UpdateStatusAsync(new DiscordActivity($"/help | v0.7", ActivityType.Playing));
   }
 
   /// <summary>
